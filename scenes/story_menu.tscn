@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://6njr4xrbvry4"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="MainContainer" type="HBoxContainer" parent="."]
+offset_right = 1150.0
+offset_bottom = 644.0
+size_flags_horizontal = 0
+theme_override_constants/separation = 5
+
+[node name="VFlowContainer" type="VBoxContainer" parent="MainContainer"]
+custom_minimum_size = Vector2(570, 0)
+layout_mode = 2
+
+[node name="VFlowContainer2" type="VBoxContainer" parent="MainContainer"]
+custom_minimum_size = Vector2(570, 0)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="new_game_button" type="Button" parent="MainContainer/VFlowContainer2"]
+layout_mode = 2
+text = "Новая игра"
+alignment = 0
+
+[node name="continue_button" type="Button" parent="MainContainer/VFlowContainer2"]
+layout_mode = 2
+text = "Продолжить"
+alignment = 0
+
+[node name="choose_save_button" type="Button" parent="MainContainer/VFlowContainer2"]
+layout_mode = 2
+text = "Выбрать сохранение"
+alignment = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/VFlowContainer2"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 10
+
+[node name="back2menu_button" type="Button" parent="MainContainer/VFlowContainer2/HBoxContainer"]
+layout_mode = 2
+text = "Вернуться в меню"

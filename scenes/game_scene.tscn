@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://dbius52b7r1i5"]
+
+[ext_resource type="PackedScene" uid="uid://cr6gc767d2my3" path="res://scenes/cube.tscn" id="1_lyxhp"]
+
+[node name="GameScene" type="Node3D"]
+
+[node name="table" parent="." instance=ExtResource("1_lyxhp")]
+transform = Transform3D(1.64759, 0, 0, 0, 0.109923, 0, 0, 0, 2.34306, 0, 0, -0.5)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.92526, 0.155872)
+projection = 1
+size = 2.98522
