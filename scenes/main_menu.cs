@@ -10,27 +10,43 @@ public partial class main_menu : Node2D
     Button settings;
 	Button exit;
     // Called when the node enters the scene tree for the first time.
+    
     public override void _Ready()
 	{
-
-		GD.Print("Работаю");
-        this.story = this.GetNode<Button>(new NodePath("all_menu_BoxContainer/menu_BoxContainer/story_mod_button"));
-        this.story.Connect("story", _Pressed());
-        this.duel = this.GetNode<Button>(new NodePath("all_menu_BoxContainer/menu_BoxContainer/duel_mod_button"));
-        this.duel.Pressed += _Pressed;
-        this.collection = this.GetNode<Button>(new NodePath("all_menu_BoxContainer/menu_BoxContainer/card_collection_button"));
-        this.collection.Pressed += _Pressed;
-        this.settings = this.GetNode<Button>(new NodePath("all_menu_BoxContainer/menu_BoxContainer/settings_button"));
-        this.settings.Pressed += _Pressed;
-        this.exit = this.GetNode<Button>(new NodePath("all_menu_BoxContainer/menu_BoxContainer/exit_button"));
-        this.exit.Pressed += Exit_Pressed; 
+        GD.Print("Работаю");
+        story = GetNode<Button>(new NodePath("all_menu_BoxContainer/menu_BoxContainer/story_mod_button"));
+        story.Pressed += _PressedStory;
+        duel = GetNode<Button>(new NodePath("all_menu_BoxContainer/menu_BoxContainer/duel_mod_button"));
+        duel.Pressed += _PressedDuel;
+        collection = GetNode<Button>(new NodePath("all_menu_BoxContainer/menu_BoxContainer/card_collection_button"));
+        collection.Pressed += _PressedCollection;
+        settings = GetNode<Button>(new NodePath("all_menu_BoxContainer/menu_BoxContainer/settings_button"));
+        settings.Pressed += _PressedSettings;
+        exit = GetNode<Button>(new NodePath("all_menu_BoxContainer/menu_BoxContainer/exit_button"));
+        exit.Pressed += Exit_Pressed; 
 
     }
-    private void _Pressed()
+
+    private void _PressedCollection()
     {
-        SceneTree st = this.GetTree();
-        switch Button. ;
-        //st.ChangeSceneToFile("res://scenes/settings.tscn");
+        throw new NotImplementedException();
+    }
+
+    private async void _PressedStory()
+    {
+        GetTree().ChangeSceneToFile("res://scenes/story_menu.tscn");
+        
+    }
+
+    private void _PressedDuel()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void _PressedSettings()
+    {
+        GetTree().ChangeSceneToFile("res://scenes/settings.tscn");
+        
     }
 
     private void Exit_Pressed()
