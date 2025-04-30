@@ -1,0 +1,57 @@
+[gd_scene load_steps=8 format=3 uid="uid://d2iths7wpfxne"]
+
+[ext_resource type="Script" path="res://scripts/CardPlayer.cs" id="1_7x6aj"]
+[ext_resource type="Texture2D" uid="uid://cqc6oekkwqerg" path="res://resources/CardsStorage/images/dwarf.png" id="1_65fa5"]
+[ext_resource type="PackedScene" uid="uid://b17ygl66787hw" path="res://scenes/Text3D.tscn" id="2_rdrk2"]
+[ext_resource type="Material" uid="uid://c4ul4b8okqcnm" path="res://scenes/Card/yellow_outline_card.tres" id="3_hfa5m"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_nlwdo"]
+material = ExtResource("3_hfa5m")
+size = Vector3(0.5, 0.001, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3fbt3"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_81vdh"]
+size = Vector3(0.523315, 1.09634, 1.05853)
+
+[node name="Card" type="Node3D" node_paths=PackedStringArray("OutlineMesh", "HoverArea")]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+script = ExtResource("1_7x6aj")
+OutlineMesh = NodePath("Node3D/outline/MeshInstance3D2")
+HoverArea = NodePath("Node3D/Area3D")
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.5, 0, 0, 0)
+
+[node name="outline" type="StaticBody3D" parent="Node3D"]
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Node3D/outline"]
+transform = Transform3D(1.05, 0, 0, 0, 1, 0, 0, 0, 1.05, 0, 0, 0)
+mesh = SubResource("BoxMesh_nlwdo")
+skeleton = NodePath("")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/outline"]
+visible = false
+shape = SubResource("BoxShape3D_3fbt3")
+
+[node name="Area3D" type="Area3D" parent="Node3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000915522, 0.527176, -0.00692749)
+shape = SubResource("BoxShape3D_81vdh")
+
+[node name="TargetImageCard" type="Sprite3D" parent="Node3D"]
+transform = Transform3D(0.155, 0, 0, 0, -1.20206e-08, 1, 0, -0.275, -4.37114e-08, 0, 0.036, 0)
+texture = ExtResource("1_65fa5")
+
+[node name="Node3D2" parent="." instance=ExtResource("2_rdrk2")]
+transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, -0.23, 0.05, -0.23)
+
+[node name="Node3D3" parent="." instance=ExtResource("2_rdrk2")]
+transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, 0.23, 0.05, -0.23)
+
+[node name="Node3D4" parent="." instance=ExtResource("2_rdrk2")]
+transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, -0.23, 0.05, 0.23)
+
+[node name="Node3D5" parent="." instance=ExtResource("2_rdrk2")]
+transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, 0.23, 0.05, 0.23)

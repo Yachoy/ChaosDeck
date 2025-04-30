@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://c66keccqrqhpo"]
+
+[ext_resource type="Script" path="res://scripts/CardPlace.cs" id="1_0ks6x"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m38l6"]
+albedo_color = Color(0.505344, 0.505344, 0.505344, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_3if3s"]
+material = SubResource("StandardMaterial3D_m38l6")
+size = Vector3(0.5, 0.006, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_67n44"]
+size = Vector3(0.49292, 0.443481, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_awqod"]
+size = Vector3(0.49292, 0.505814, 1)
+
+[node name="ItemToPlaceCard" type="Node3D" node_paths=PackedStringArray("HoverArea")]
+transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 0, 0)
+script = ExtResource("1_0ks6x")
+HoverArea = NodePath("Node3D/Area3D")
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.5, 0, 0, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D/StaticBody3D"]
+mesh = SubResource("BoxMesh_3if3s")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00109863, 0.172913, 0)
+shape = SubResource("BoxShape3D_67n44")
+
+[node name="Area3D" type="Area3D" parent="Node3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00109863, 0.21415, 0)
+shape = SubResource("BoxShape3D_awqod")

@@ -1,0 +1,35 @@
+[
+  {
+	"name": "Warrior",
+	"hp": 10,
+	"damage": 3,
+	"cost": 2,
+	"type": "Melee",
+	"image_path": "warrior.png",
+	"vars": {
+	  "special_ability": "Charge",
+	  "armor": 1
+	}
+  },
+  {
+	"name": "Archer",
+	"hp": 5,
+	"damage": 4,
+	"cost": 3,
+	"type": "Ranged",
+	"image_path": "archer.jpg",
+	"vars": {
+
+	}
+  },
+	{
+	"name": "Dwarf",
+	"hp": 4,
+	"damage": 5,
+	"cost": 4,
+	"type": "Melee",
+	"image_path": "dwarf.png",
+	"vars": {
+	}
+  }
+]

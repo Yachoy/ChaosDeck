@@ -1,13 +1,132 @@
-[gd_scene load_steps=2 format=3 uid="uid://dbius52b7r1i5"]
+[gd_scene load_steps=9 format=3 uid="uid://dbius52b7r1i5"]
 
+[ext_resource type="Texture2D" uid="uid://s7sodme2owht" path="res://resources/images/swappy-20250421-181951-removebg-preview.png" id="1_0o2cb"]
 [ext_resource type="PackedScene" uid="uid://cr6gc767d2my3" path="res://scenes/cube.tscn" id="1_lyxhp"]
+[ext_resource type="Script" path="res://scripts/HandPlayer.cs" id="2_ffhym"]
+[ext_resource type="PackedScene" uid="uid://d2iths7wpfxne" path="res://scenes/Card/card.tscn" id="3_30oii"]
+[ext_resource type="PackedScene" uid="uid://c66keccqrqhpo" path="res://scenes/item_to_place_card.tscn" id="5_j6eu1"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_os47l"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b2xi4"]
+albedo_color = Color(0.663278, 0.479874, 0.273226, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_6ubc8"]
+material = SubResource("StandardMaterial3D_b2xi4")
 
 [node name="GameScene" type="Node3D"]
 
+[node name="RightMenu" type="Panel" parent="."]
+clip_contents = true
+anchors_preset = -1
+anchor_left = 0.83
+anchor_top = 0.199
+anchor_right = 1.0
+anchor_bottom = 0.543
+offset_left = -7.15997
+offset_top = 0.0480042
+offset_right = -1.0
+offset_bottom = 0.136017
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightMenu"]
+layout_mode = 2
+anchor_top = -0.013
+anchor_right = 0.987
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = -0.101
+offset_right = -37.374
+scale = Vector2(1.23172, 1)
+alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="RightMenu/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="RightMenu/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+texture = ExtResource("1_0o2cb")
+
+[node name="GiveUpBTN" type="Button" parent="RightMenu/VBoxContainer"]
+layout_mode = 2
+text = "Сдаться"
+
+[node name="EndRoundBTN" type="Button" parent="RightMenu/VBoxContainer"]
+layout_mode = 2
+text = "Закончить ход"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RightMenu/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="TXR1" type="TextureRect" parent="RightMenu/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("1_0o2cb")
+stretch_mode = 3
+
 [node name="table" parent="." instance=ExtResource("1_lyxhp")]
-transform = Transform3D(1.64759, 0, 0, 0, 0.109923, 0, 0, 0, 2.34306, 0, 0, -0.5)
+transform = Transform3D(4.32, 0, 0, 0, 0.045, 0, 0, 0, 2.37861, 0.781746, 0, -0.441882)
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.92526, 0.155872)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 4, 0)
+keep_aspect = 0
 projection = 1
-size = 2.98522
+size = 5.955
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.132948, 0.991123, 0, -0.991123, -0.132948, 0, 1.15899, 0)
+
+[node name="PlaceHand1" type="Node3D" parent="." node_paths=PackedStringArray("_start_pos_cards", "_start_pos_places")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.781746, 0, -0.0861114)
+script = ExtResource("2_ffhym")
+_cardScene = ExtResource("3_30oii")
+_start_pos_cards = NodePath("Hand")
+_placeCardScene = ExtResource("5_j6eu1")
+_start_pos_places = NodePath("Place")
+_horizontalSpacingCards = 0.535
+_horizontalSpacingPlaces = 0.5
+
+[node name="Place" type="Node3D" parent="PlaceHand1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7, 0.2, 0)
+
+[node name="Hand" type="Node3D" parent="PlaceHand1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.918, 0.2, 0.551)
+
+[node name="DecorPlaceHand3" type="StaticBody3D" parent="PlaceHand1"]
+transform = Transform3D(4.36353, 0, 0, 0, 1, 0, 0, 0, 1.30633, -0.463611, 0, -0.012)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlaceHand1/DecorPlaceHand3"]
+shape = SubResource("BoxShape3D_os47l")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlaceHand1/DecorPlaceHand3"]
+transform = Transform3D(0.738118, 0, 0, 0, 0.100444, 0, 0, 0, 0.413275, 0, 0, 0)
+mesh = SubResource("BoxMesh_6ubc8")
+
+[node name="PlaceHand2" type="Node3D" parent="." node_paths=PackedStringArray("_start_pos_cards", "_start_pos_places")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.781746, 0, -0.799587)
+script = ExtResource("2_ffhym")
+_cardScene = ExtResource("3_30oii")
+_start_pos_cards = NodePath("Hand")
+_placeCardScene = ExtResource("5_j6eu1")
+_start_pos_places = NodePath("Place")
+IsAnotherTeam = true
+_horizontalSpacingCards = 0.535
+_horizontalSpacingPlaces = 0.5
+
+[node name="Place" type="Node3D" parent="PlaceHand2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7, 0.2, 0)
+
+[node name="Hand" type="Node3D" parent="PlaceHand2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.918, 0.2, -0.561)
+
+[node name="DecorPlaceHand2" type="StaticBody3D" parent="PlaceHand2"]
+transform = Transform3D(4.36353, 0, 0, 0, 1, 0, 0, 0, 1.30633, -0.463611, 0, -0.012)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlaceHand2/DecorPlaceHand2"]
+shape = SubResource("BoxShape3D_os47l")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlaceHand2/DecorPlaceHand2"]
+transform = Transform3D(0.738118, 0, 0, 0, 0.100444, 0, 0, 0, 0.413275, 0, 0, 0)
+mesh = SubResource("BoxMesh_6ubc8")
