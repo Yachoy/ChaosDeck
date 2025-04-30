@@ -1,8 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://c5m1ub2t17nhl"]
+[gd_scene load_steps=3 format=3 uid="uid://c5m1ub2t17nhl"]
+
+[ext_resource type="Script" path="res://scenes/CardColection.cs" id="1_pcjmg"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_4mm1k"]
 
 [node name="Node2D" type="Node2D"]
+script = ExtResource("1_pcjmg")
 
 [node name="MainContainer" type="HBoxContainer" parent="."]
 offset_left = -1.0
@@ -94,7 +97,9 @@ layout_mode = 2
 text = "Название колоды: "
 
 [node name="descName_TextEdit" type="TextEdit" parent="MainContainer/VFlowContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(300, 30)
 layout_mode = 2
+scroll_past_end_of_file = true
 
 [node name="descCard_GridContainer" type="HBoxContainer" parent="MainContainer/VFlowContainer2"]
 layout_mode = 2

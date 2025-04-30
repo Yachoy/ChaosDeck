@@ -1,14 +1,23 @@
 using Godot;
 using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
+using System.Text.Json;
+using System.IO;
+using System.Collections.Generic;
+using Godot.Collections;
+using System.ComponentModel;
 
 public partial class main_menu : Node2D
 {
     Button story;
     Button duel;
     Button collection;
-    Button settings;
+    Button sett;
 	Button exit;
+    public static bool fullscr;
+    
     // Called when the node enters the scene tree for the first time.
     
     public override void _Ready()
@@ -20,22 +29,47 @@ public partial class main_menu : Node2D
         duel.Pressed += _PressedDuel;
         collection = GetNode<Button>(new NodePath("all_menu_BoxContainer/menu_BoxContainer/card_collection_button"));
         collection.Pressed += _PressedCollection;
-        settings = GetNode<Button>(new NodePath("all_menu_BoxContainer/menu_BoxContainer/settings_button"));
-        settings.Pressed += _PressedSettings;
+        sett = GetNode<Button>(new NodePath("all_menu_BoxContainer/menu_BoxContainer/settings_button"));
+        sett.Pressed += _PressedSettings;
         exit = GetNode<Button>(new NodePath("all_menu_BoxContainer/menu_BoxContainer/exit_button"));
-        exit.Pressed += Exit_Pressed; 
+        exit.Pressed += Exit_Pressed;
+        Read();
+        
+        
+        
+    }
+    public static void Read() {
+        fullscr = Load("res://saves/settings.json", "Fullscreen");
+        if (fullscr)
+        {
+            DisplayServer.WindowSetMode(DisplayServer.WindowMode.Fullscreen);
+        }
+        else
+        {
+            DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
+        }
+    }
+    public static bool Load(string fullPath, string jsonKey)
+    {
+        using var file = Godot.FileAccess.Open(fullPath, Godot.FileAccess.ModeFlags.Read);
+        string jsonString = file.GetAsText();
+        Variant parsedResult = Json.ParseString(jsonString);
+        Dictionary data = parsedResult.As<Dictionary>();
+        Variant valueVariant = data[jsonKey];
+        bool result = valueVariant.As<bool>();
 
+        return result;
     }
 
     private void _PressedCollection()
     {
-        throw new NotImplementedException();
+        GetTree().ChangeSceneToFile("res://scenes/card_colection.tscn");
     }
 
     private async void _PressedStory()
     {
+
         GetTree().ChangeSceneToFile("res://scenes/story_menu.tscn");
-        
     }
 
     private void _PressedDuel()
@@ -48,16 +82,27 @@ public partial class main_menu : Node2D
         GetTree().ChangeSceneToFile("res://scenes/settings.tscn");
         
     }
+    //параметры, СУКА!!!!!!!!!!!!!!!!!
+    public static void Save(string fullPath, string jsonKey)
+    {
+        var data = new Dictionary { { jsonKey, fullscr } };
+        string jsonString = Json.Stringify(data, "\t");
+        using var file = Godot.FileAccess.Open(fullPath, Godot.FileAccess.ModeFlags.Write);
+        file.StoreString(jsonString);       
+    }
+    
+
 
     private void Exit_Pressed()
     {
+        Save("res://saves/settings.json", "Fullscreen");
         GetTree().Quit();
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
 	{
-	}
+    }
 
     public override void _Input(InputEvent @event)
     {
@@ -82,5 +127,6 @@ public partial class main_menu : Node2D
             
         }
     }
-   
+ 
+    
 }

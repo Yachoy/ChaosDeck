@@ -20,6 +20,7 @@ public partial class story_menu : Node2D
         continueGameB.Pressed += ContinGame;
         back2menuB = GetNode<Button>(new NodePath("MainContainer/VFlowContainer2/HBoxContainer/back2menu_button"));
         back2menuB.Pressed += B2M;
+		
     }
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

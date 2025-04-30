@@ -12,6 +12,8 @@ offset_left = -1.0
 offset_top = -1.0
 offset_right = 1139.0
 offset_bottom = 641.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_constants/separation = 40
 
 [node name="VFlowContainer" type="VBoxContainer" parent="MainContainer"]
@@ -46,6 +48,14 @@ text = "Громкость звуков
 
 [node name="another_sound_HSlider" type="HSlider" parent="MainContainer/VFlowContainer"]
 layout_mode = 2
+
+[node name="graphics_Label" type="Label" parent="MainContainer/VFlowContainer"]
+layout_mode = 2
+text = "Графика"
+
+[node name="FullScrean_CheckBox" type="CheckBox" parent="MainContainer/VFlowContainer"]
+layout_mode = 2
+text = "Полноэкранный режим"
 
 [node name="VFlowContainer2" type="VBoxContainer" parent="MainContainer"]
 custom_minimum_size = Vector2(550, 0)

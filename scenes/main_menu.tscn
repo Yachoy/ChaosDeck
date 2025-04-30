@@ -10,6 +10,7 @@ modulate = Color(0.490196, 0.282353, 0.219608, 1)
 self_modulate = Color(0.231373, 0.231373, 0.431373, 1)
 texture_filter = 1
 script = ExtResource("1_xne2u")
+metadata/Fullscreen = false
 
 [node name="all_menu_BoxContainer" type="VBoxContainer" parent="."]
 offset_left = 579.0
