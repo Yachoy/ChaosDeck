@@ -1,0 +1,117 @@
+[gd_scene load_steps=3 format=3 uid="uid://c5m1ub2t17nhl"]
+
+[ext_resource type="Script" path="res://scenes/CardColection.cs" id="1_pcjmg"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_4mm1k"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_pcjmg")
+
+[node name="MainContainer" type="HBoxContainer" parent="."]
+offset_left = -1.0
+offset_top = -1.0
+offset_right = 1139.0
+offset_bottom = 641.0
+theme_override_constants/separation = 40
+
+[node name="VFlowContainer" type="VBoxContainer" parent="MainContainer"]
+custom_minimum_size = Vector2(550, 0)
+layout_mode = 2
+
+[node name="elements_HBoxContainer" type="HBoxContainer" parent="MainContainer/VFlowContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Chaos_Button" type="Button" parent="MainContainer/VFlowContainer/elements_HBoxContainer"]
+layout_mode = 2
+text = "Хаос"
+icon = SubResource("CanvasTexture_4mm1k")
+
+[node name="Destiny_Button" type="Button" parent="MainContainer/VFlowContainer/elements_HBoxContainer"]
+layout_mode = 2
+text = "Судьба"
+
+[node name="Luck_Button" type="Button" parent="MainContainer/VFlowContainer/elements_HBoxContainer"]
+layout_mode = 2
+text = "Удача"
+
+[node name="Life_Button" type="Button" parent="MainContainer/VFlowContainer/elements_HBoxContainer"]
+layout_mode = 2
+text = "Жизнь"
+
+[node name="allCards_GridContainer" type="HBoxContainer" parent="MainContainer/VFlowContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="cards_GridContainer" type="GridContainer" parent="MainContainer/VFlowContainer/allCards_GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VScrollBar" type="VScrollBar" parent="MainContainer/VFlowContainer/allCards_GridContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/VFlowContainer"]
+custom_minimum_size = Vector2(0, 175)
+layout_mode = 2
+
+[node name="descStatblock_Label" type="Label" parent="MainContainer/VFlowContainer/HBoxContainer"]
+layout_mode = 2
+text = "Количество карт: **
+Количество элементов: *
+
+Начальные условия:
+Количество карт: *
+Жизнь: **"
+
+[node name="statistic_HBoxContainer" type="HBoxContainer" parent="MainContainer/VFlowContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="menu_VBoxContainer" type="VBoxContainer" parent="MainContainer/VFlowContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="back2menu_button" type="Button" parent="MainContainer/VFlowContainer/HBoxContainer/menu_VBoxContainer"]
+layout_mode = 2
+text = "Вернуться в меню"
+
+[node name="clear_Button" type="Button" parent="MainContainer/VFlowContainer/HBoxContainer/menu_VBoxContainer"]
+layout_mode = 2
+text = "Очистить"
+
+[node name="Button" type="Button" parent="MainContainer/VFlowContainer/HBoxContainer/menu_VBoxContainer"]
+layout_mode = 2
+text = "Отменить"
+
+[node name="VFlowContainer2" type="VBoxContainer" parent="MainContainer"]
+custom_minimum_size = Vector2(550, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/VFlowContainer2"]
+layout_mode = 2
+alignment = 1
+
+[node name="descName_Label" type="Label" parent="MainContainer/VFlowContainer2/HBoxContainer"]
+layout_mode = 2
+text = "Название колоды: "
+
+[node name="descName_TextEdit" type="TextEdit" parent="MainContainer/VFlowContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(300, 30)
+layout_mode = 2
+scroll_past_end_of_file = true
+
+[node name="descCard_GridContainer" type="HBoxContainer" parent="MainContainer/VFlowContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="descCards_GridContainer" type="GridContainer" parent="MainContainer/VFlowContainer2/descCard_GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VScrollBar" type="VScrollBar" parent="MainContainer/VFlowContainer2/descCard_GridContainer"]
+layout_mode = 2
+
+[node name="cardDescriprtion_Label" type="Label" parent="MainContainer/VFlowContainer2"]
+custom_minimum_size = Vector2(0, 175)
+layout_mode = 2

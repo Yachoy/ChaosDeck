@@ -1,0 +1,105 @@
+[gd_scene load_steps=3 format=3 uid="uid://c321icoqg4ym5"]
+
+[ext_resource type="Script" path="res://scenes/main_menu.cs" id="1_xne2u"]
+
+[sub_resource type="FontVariation" id="FontVariation_p321j"]
+variation_face_index = 3
+
+[node name="main_menu" type="Node2D"]
+modulate = Color(0.490196, 0.282353, 0.219608, 1)
+self_modulate = Color(0.231373, 0.231373, 0.431373, 1)
+texture_filter = 1
+script = ExtResource("1_xne2u")
+metadata/Fullscreen = false
+
+[node name="all_menu_BoxContainer" type="VBoxContainer" parent="."]
+offset_left = 579.0
+offset_right = 1149.0
+offset_bottom = 646.0
+theme_override_constants/separation = 16
+
+[node name="game_name_label" type="Label" parent="all_menu_BoxContainer"]
+clip_contents = true
+layout_mode = 2
+mouse_filter = 1
+theme_override_colors/font_color = Color(0.196078, 0.00392157, 0.0745098, 1)
+theme_override_colors/font_shadow_color = Color(0.211765, 0.129412, 0.294118, 1)
+theme_override_fonts/font = SubResource("FontVariation_p321j")
+theme_override_font_sizes/font_size = 52
+text = "Колода хаоса"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="menu_BoxContainer" type="VBoxContainer" parent="all_menu_BoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 13
+
+[node name="story_mod_button" type="Button" parent="all_menu_BoxContainer/menu_BoxContainer"]
+modulate = Color(0.392157, 0.337255, 0.141176, 1)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_focus_color = Color(0.372549, 0.0235294, 0.372549, 0.882353)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_focus_color = Color(0.372549, 0.0235294, 0.372549, 0.882353)
+theme_override_font_sizes/font_size = 28
+action_mode = 0
+text = "Сюжетный режим
+"
+alignment = 0
+language = "Russian"
+
+[node name="duel_mod_button" type="Button" parent="all_menu_BoxContainer/menu_BoxContainer"]
+modulate = Color(0.392157, 0.337255, 0.141176, 1)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_focus_color = Color(0.372549, 0.0235294, 0.372549, 0.882353)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_focus_color = Color(0.372549, 0.0235294, 0.372549, 0.882353)
+theme_override_font_sizes/font_size = 28
+action_mode = 0
+text = "Дуэльный режим
+"
+alignment = 0
+language = "Russian"
+
+[node name="card_collection_button" type="Button" parent="all_menu_BoxContainer/menu_BoxContainer"]
+modulate = Color(0.392157, 0.337255, 0.141176, 1)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_focus_color = Color(0.372549, 0.0235294, 0.372549, 0.882353)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_focus_color = Color(0.372549, 0.0235294, 0.372549, 0.882353)
+theme_override_font_sizes/font_size = 28
+action_mode = 0
+text = "Коллекция карт
+"
+alignment = 0
+language = "Russian"
+
+[node name="settings_button" type="Button" parent="all_menu_BoxContainer/menu_BoxContainer"]
+modulate = Color(0.392157, 0.337255, 0.141176, 1)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_focus_color = Color(0.372549, 0.0235294, 0.372549, 0.882353)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_focus_color = Color(0.372549, 0.0235294, 0.372549, 0.882353)
+theme_override_font_sizes/font_size = 28
+action_mode = 0
+text = "Настройки
+"
+alignment = 0
+language = "Russian"
+
+[node name="exit_button" type="Button" parent="all_menu_BoxContainer/menu_BoxContainer"]
+modulate = Color(0.392157, 0.337255, 0.141176, 1)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_focus_color = Color(0.372549, 0.0235294, 0.372549, 0.882353)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/icon_focus_color = Color(0.372549, 0.0235294, 0.372549, 0.882353)
+theme_override_font_sizes/font_size = 28
+action_mode = 0
+text = "Выход
+"
+alignment = 0
+language = "Russian"

@@ -1,10 +1,10 @@
 [gd_scene load_steps=9 format=3 uid="uid://dbius52b7r1i5"]
 
 [ext_resource type="Texture2D" uid="uid://s7sodme2owht" path="res://resources/images/swappy-20250421-181951-removebg-preview.png" id="1_0o2cb"]
-[ext_resource type="PackedScene" uid="uid://cr6gc767d2my3" path="res://scenes/cube.tscn" id="1_lyxhp"]
+[ext_resource type="PackedScene" uid="uid://cr6gc767d2my3" path="res://scenes/Card/SourceScenes/cube.tscn" id="1_lyxhp"]
 [ext_resource type="Script" path="res://scripts/HandPlayer.cs" id="2_ffhym"]
 [ext_resource type="PackedScene" uid="uid://d2iths7wpfxne" path="res://scenes/Card/card.tscn" id="3_30oii"]
-[ext_resource type="PackedScene" uid="uid://c66keccqrqhpo" path="res://scenes/item_to_place_card.tscn" id="5_j6eu1"]
+[ext_resource type="PackedScene" uid="uid://c66keccqrqhpo" path="res://scenes/Card/item_to_place_card.tscn" id="5_j6eu1"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_os47l"]
 

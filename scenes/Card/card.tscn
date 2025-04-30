@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/CardPlayer.cs" id="1_7x6aj"]
 [ext_resource type="Texture2D" uid="uid://cqc6oekkwqerg" path="res://resources/CardsStorage/images/dwarf.png" id="1_65fa5"]
-[ext_resource type="PackedScene" uid="uid://b17ygl66787hw" path="res://scenes/Text3D.tscn" id="2_rdrk2"]
-[ext_resource type="Material" uid="uid://c4ul4b8okqcnm" path="res://scenes/Card/yellow_outline_card.tres" id="3_hfa5m"]
+[ext_resource type="PackedScene" uid="uid://b17ygl66787hw" path="res://scenes/Card/SourceScenes/Text3D.tscn" id="2_rdrk2"]
+[ext_resource type="Material" uid="uid://c4ul4b8okqcnm" path="res://scenes/Card/SourceScenes/yellow_outline_card.tres" id="3_hfa5m"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_nlwdo"]
 material = ExtResource("3_hfa5m")
