@@ -192,6 +192,7 @@ public partial class CardPlayer : Node3D
         HoverArea.InputEvent += OnAreaInputEvent; // Connect the input event signal
 
         AddToGroup(groupHoverName); // Keep if used elsewhere
+        
     }
     private void OnAreaHoverEntered()
     {

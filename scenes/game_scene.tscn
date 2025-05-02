@@ -78,7 +78,7 @@ size = 5.955
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.132948, 0.991123, 0, -0.991123, -0.132948, 0, 1.15899, 0)
 
-[node name="PlaceHand1" type="Node3D" parent="." node_paths=PackedStringArray("_start_pos_cards", "_start_pos_places")]
+[node name="PlaceHand1" type="Node3D" parent="." node_paths=PackedStringArray("_start_pos_cards", "_start_pos_places", "btnEndround")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.781746, 0, -0.0861114)
 script = ExtResource("2_ffhym")
 _cardScene = ExtResource("3_30oii")
@@ -87,6 +87,7 @@ _placeCardScene = ExtResource("5_j6eu1")
 _start_pos_places = NodePath("Place")
 _horizontalSpacingCards = 0.535
 _horizontalSpacingPlaces = 0.5
+btnEndround = NodePath("../RightMenu/VBoxContainer/EndRoundBTN")
 
 [node name="Place" type="Node3D" parent="PlaceHand1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7, 0.2, 0)
@@ -104,7 +105,7 @@ shape = SubResource("BoxShape3D_os47l")
 transform = Transform3D(0.738118, 0, 0, 0, 0.100444, 0, 0, 0, 0.413275, 0, 0, 0)
 mesh = SubResource("BoxMesh_6ubc8")
 
-[node name="PlaceHand2" type="Node3D" parent="." node_paths=PackedStringArray("_start_pos_cards", "_start_pos_places")]
+[node name="PlaceHand2" type="Node3D" parent="." node_paths=PackedStringArray("_start_pos_cards", "_start_pos_places", "btnEndround")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.781746, 0, -0.799587)
 script = ExtResource("2_ffhym")
 _cardScene = ExtResource("3_30oii")
@@ -114,6 +115,7 @@ _start_pos_places = NodePath("Place")
 IsAnotherTeam = true
 _horizontalSpacingCards = 0.535
 _horizontalSpacingPlaces = 0.5
+btnEndround = NodePath("../RightMenu/VBoxContainer/EndRoundBTN")
 
 [node name="Place" type="Node3D" parent="PlaceHand2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7, 0.2, 0)

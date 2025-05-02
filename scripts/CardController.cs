@@ -272,6 +272,7 @@ public partial class CardController : Node
     HandPlayer hp1;
     HandPlayer hp2;
 
+    private bool is_button_endr_set;
     private HotSpotPlaying.Match match;
 
     private bool round_player1 = true;
@@ -290,11 +291,13 @@ public partial class CardController : Node
         match = new HotSpotPlaying.Match(new HotSpotPlaying.Player(), new HotSpotPlaying.Player());
         if (!((CardPlayer)hp2.cards[0]).isCardHidden){
             foreach(CardPlayer n in hp2.cards){
+                if (n is null) continue;
                 n.SwitchViewCard();
             }
         }
         if (((CardPlayer)hp1.cards[0]).isCardHidden){
             foreach(CardPlayer n in hp1.cards){
+                if (n is null) continue;
                 n.SwitchViewCard();
             }
         } 
@@ -304,16 +307,25 @@ public partial class CardController : Node
     public void RegisterHandPlayer1(HandPlayer hand) => hp1 = hand;
     public void RegisterHandPlayer2(HandPlayer hand) => hp2 = hand;
     
+    public void RegisterButtonEndRound(Button btn){
+        if (is_button_endr_set) return;
+        btn.Pressed += MakeRound;
+        is_button_endr_set = true;
+    }
     
     public bool IsPlayer1Round(){
         return round_player1;
     }
 
-    public bool TryMakeRound(CardPlayer card, CardPlace place){
+    public void MakeRound(){
         round_player1 = !round_player1;
         foreach(CardPlayer n in hp1.cards.Concat(hp2.cards)){
+            if (n is null) continue;
             n.SwitchViewCard();
         }
+    }
+
+    public bool ProcessCardPlacement(CardPlayer card, CardPlace place){
         return true;
     }
 
