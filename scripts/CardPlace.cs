@@ -11,8 +11,9 @@ public partial class CardPlace : Node3D
 
 	private CardController cc;
 
-	bool is_another = false;
-	bool is_selected = false;
+	public bool is_another = false;
+	public bool is_selected = false;
+    public bool isAlreadyCardHerePumPumPum = false;
 
 	public void SetIsAnotherTeam(){
 		is_another = true;
@@ -30,8 +31,12 @@ public partial class CardPlace : Node3D
 		HoverArea.MouseEntered += OnAreaHoverEntered;
 		HoverArea.MouseExited += OnAreaHoverExited;
 		HoverArea.InputEvent += OnAreaInputEvent;
-
+        HoverArea.AreaEntered += OnAreaEntered;
+        HoverArea.AreaExited += OnAreaExit;
 	}
+
+    private void OnAreaEntered(Node3D obj) => isAlreadyCardHerePumPumPum = true;
+    private void OnAreaExit(Node3D obj) => isAlreadyCardHerePumPumPum = false;
 
 
 	private void OnAreaHoverEntered() => is_selected = true;

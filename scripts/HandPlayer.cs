@@ -23,8 +23,8 @@ public partial class HandPlayer : Node3D
     [Export]
     private float _horizontalSpacingPlaces = 1.5f;
 
-    private List<Node3D> _cards = new List<Node3D>();
-    private List<Node3D> _places = new List<Node3D>();
+    public List<Node3D> cards = new List<Node3D>();
+    public List<Node3D> places = new List<Node3D>();
 
     private CardPlayer _selected_card;
 
@@ -44,6 +44,13 @@ public partial class HandPlayer : Node3D
         }
         SpawnStartCards();
         SpawnStartPlaces();
+        if (IsAnotherTeam){
+            cc.RegisterHandPlayer2(this);
+        }else{
+            cc.RegisterHandPlayer1(this);
+        }
+
+        cc.StartNewMatch();
     }
 
     private void SpawnStartPlaces(int _numberOfPlaces = 6){
@@ -64,7 +71,7 @@ public partial class HandPlayer : Node3D
                 CardPlayer.SignalName.ObjectSelected,
                 new Callable(this, MethodName.OnCardTryPut)
             );
-            _places.Add(cardInstance);
+            places.Add(cardInstance);
         }
     }
 
@@ -87,7 +94,7 @@ public partial class HandPlayer : Node3D
                 new Callable(this, MethodName.OnCardSelected)
             );
 
-            _cards.Add(cardInstance);
+            cards.Add(cardInstance);
             
         }
     }
@@ -98,8 +105,9 @@ public partial class HandPlayer : Node3D
 
     private void OnCardTryPut(CardPlace selectedPlaceCard){
         if(_selected_card is null) return;
-        if (!cc.TryMakeRound(_selected_card, selectedPlaceCard)) return;
-
+        if (selectedPlaceCard.isAlreadyCardHerePumPumPum) return;
+        _selected_card.is_placed = true;
+        cc.TryMakeRound(_selected_card, selectedPlaceCard);
         _selected_card.MoveTo(selectedPlaceCard);
 
     }

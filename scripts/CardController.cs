@@ -4,6 +4,7 @@ using Godot.Collections;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace CCSpace{
 
@@ -15,6 +16,7 @@ namespace CCSpace{
         void OnStep(CardController cardController, CardData cardData);
         void OnEvent(CardController cardController, string eventName, object eventData);
     }
+    
 
     public enum TypesCards
     {
@@ -112,12 +114,21 @@ namespace CCSpace{
         }
     }
     
-    public class CardSet{
+    public class CardSetData{
 		List<CardData> cards;
 
-		public CardSet(){
+		public CardSetData(){
 
 		} 
+        public class CardSet{
+            public CardSet(CardSetData d){
+
+            }
+        }
+        
+        public CardSet MakeInstanceForGame(){
+            return new CardSet(this);
+        }
 
 		public bool TryResolveThisCardSet(List<CardData> cards){
 			return true;
@@ -233,7 +244,7 @@ namespace HotSpotPlaying{
         int max_mana;
         int hp;
 
-        List<CCSpace.CardSet> actualDeck;
+        List<CCSpace.CardSetData.CardSet> actualDeck;
     }
 
     public class Match{
@@ -257,23 +268,52 @@ namespace HotSpotPlaying{
 
 public partial class CardController : Node
 {
-    
+
+    HandPlayer hp1;
+    HandPlayer hp2;
+
     private HotSpotPlaying.Match match;
 
     private bool round_player1 = true;
 
 	public override void _Ready()
 	{
-        // FOR DEBUGGING
-        match = new HotSpotPlaying.Match(new HotSpotPlaying.Player(), new HotSpotPlaying.Player());
 	}
 
+    
+
+    public bool StartNewMatch(){
+        
+        if (hp1 is null || hp2 is  null){
+            return false;
+        }
+        match = new HotSpotPlaying.Match(new HotSpotPlaying.Player(), new HotSpotPlaying.Player());
+        if (!((CardPlayer)hp2.cards[0]).isCardHidden){
+            foreach(CardPlayer n in hp2.cards){
+                n.SwitchViewCard();
+            }
+        }
+        if (((CardPlayer)hp1.cards[0]).isCardHidden){
+            foreach(CardPlayer n in hp1.cards){
+                n.SwitchViewCard();
+            }
+        } 
+        return true;
+    }
+
+    public void RegisterHandPlayer1(HandPlayer hand) => hp1 = hand;
+    public void RegisterHandPlayer2(HandPlayer hand) => hp2 = hand;
+    
+    
     public bool IsPlayer1Round(){
         return round_player1;
     }
 
     public bool TryMakeRound(CardPlayer card, CardPlace place){
         round_player1 = !round_player1;
+        foreach(CardPlayer n in hp1.cards.Concat(hp2.cards)){
+            n.SwitchViewCard();
+        }
         return true;
     }
 

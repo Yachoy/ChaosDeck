@@ -1,9 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://d2iths7wpfxne"]
+[gd_scene load_steps=9 format=3 uid="uid://d2iths7wpfxne"]
 
 [ext_resource type="Script" path="res://scripts/CardPlayer.cs" id="1_7x6aj"]
 [ext_resource type="Texture2D" uid="uid://cqc6oekkwqerg" path="res://resources/CardsStorage/images/dwarf.png" id="1_65fa5"]
 [ext_resource type="PackedScene" uid="uid://b17ygl66787hw" path="res://scenes/Card/SourceScenes/Text3D.tscn" id="2_rdrk2"]
 [ext_resource type="Material" uid="uid://c4ul4b8okqcnm" path="res://scenes/Card/SourceScenes/yellow_outline_card.tres" id="3_hfa5m"]
+
+[sub_resource type="Curve" id="Curve_jy1ss"]
+_data = [Vector2(0.0661417, 0.0385494), 0.0, 0.0, 0, 0, Vector2(0.125984, 0.138778), 0.0, 0.0, 0, 0, Vector2(0.355906, 0.294689), 3.35451, 3.35451, 0, 0, Vector2(0.900787, 0.899772), 0.0, 0.0, 0, 0]
+point_count = 4
 
 [sub_resource type="BoxMesh" id="BoxMesh_nlwdo"]
 material = ExtResource("3_hfa5m")
@@ -14,11 +18,14 @@ size = Vector3(0.5, 0.001, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_81vdh"]
 size = Vector3(0.523315, 1.09634, 1.05853)
 
-[node name="Card" type="Node3D" node_paths=PackedStringArray("OutlineMesh", "HoverArea")]
+[node name="Card" type="Node3D" node_paths=PackedStringArray("OutlineMesh", "HoverArea", "imgCard", "nodes")]
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
 script = ExtResource("1_7x6aj")
 OutlineMesh = NodePath("Node3D/outline/MeshInstance3D2")
 HoverArea = NodePath("Node3D/Area3D")
+imgCard = NodePath("Node3D/TargetImageCard")
+nodes = [NodePath("TypeT"), NodePath("ManaT"), NodePath("CostT"), NodePath("DamageT")]
+MoveEaseCurve = SubResource("Curve_jy1ss")
 
 [node name="Node3D" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.5, 0, 0, 0)
@@ -44,14 +51,14 @@ shape = SubResource("BoxShape3D_81vdh")
 transform = Transform3D(0.155, 0, 0, 0, -1.20206e-08, 1, 0, -0.275, -4.37114e-08, 0, 0.036, 0)
 texture = ExtResource("1_65fa5")
 
-[node name="Node3D2" parent="." instance=ExtResource("2_rdrk2")]
+[node name="TypeT" parent="." instance=ExtResource("2_rdrk2")]
 transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, -0.23, 0.05, -0.23)
 
-[node name="Node3D3" parent="." instance=ExtResource("2_rdrk2")]
+[node name="ManaT" parent="." instance=ExtResource("2_rdrk2")]
 transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, 0.23, 0.05, -0.23)
 
-[node name="Node3D4" parent="." instance=ExtResource("2_rdrk2")]
+[node name="CostT" parent="." instance=ExtResource("2_rdrk2")]
 transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, -0.23, 0.05, 0.23)
 
-[node name="Node3D5" parent="." instance=ExtResource("2_rdrk2")]
+[node name="DamageT" parent="." instance=ExtResource("2_rdrk2")]
 transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, 0.23, 0.05, 0.23)

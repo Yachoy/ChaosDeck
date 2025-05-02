@@ -5,17 +5,26 @@ public partial class CardPlayer : Node3D
 {
     [Export]
     public MeshInstance3D OutlineMesh { get; set; }
-
     [Export]
-    public Area3D HoverArea { get; set; } // Подключите сюда свой Area3D
+    public Area3D HoverArea { get; set; }
+    [Export]
+    public Sprite3D imgCard {get;set;}
+    [Export]
+    public Godot.Collections.Array<Node> nodes;
+    [Export]
+    public bool isCardHidden {get; private set;}
+    [Export]
+    private bool isSelected = false;
+	[Export]
+    private bool is_another = false;
+    [Export]
+    public bool is_placed = false;
 
     [Signal]
     public delegate void ObjectSelectedEventHandler(CardPlayer selectedObject);
-    private bool isSelected = false;
+    
 
     private const String groupHoverName = "HoverObject"; // Keep if used elsewhere
-
-	private bool is_another = false;
 
     private CardController cc;
     // Параметры анимации перемещения
@@ -24,10 +33,109 @@ public partial class CardPlayer : Node3D
     [Export]
     public Curve MoveEaseCurve; // Кривая изменения скорости (например, плавное начало и конец)
 
+    private Texture2D _previousTexture;
+
 	public void SetIsAnotherTeam(){
 		is_another = true;
 	}
     
+    public bool SwitchViewCard(){
+        if (is_placed) return false;
+        foreach(Node3D n in nodes){
+            n.Visible = !n.Visible;
+            isCardHidden = n.Visible;
+        }
+        Vector3 scl = imgCard.Scale;
+        Vector3 changeS = new Vector3(0.01f, 0.04f, 0);
+        if (isCardHidden){
+            scl -= changeS;
+            ResetTexture();
+        }else{
+            scl += changeS;
+            //TODO: ЗАГЛУШКА! Need to change to correct back side card
+            ChangeTexture("res://resources/images/backCard.png");
+        }
+        imgCard.Scale = scl;
+        return true;
+    }
+
+	public void ChangeTexture(string newTexturePath)
+	{
+		_previousTexture = imgCard.Texture;
+		var newTexture = GD.Load<Texture2D>(newTexturePath);
+
+		if (newTexture != null)
+		{
+			imgCard.Texture = newTexture;
+		}
+		else
+		{
+			GD.PrintErr($"Error: Could not load texture from path: {newTexturePath}");
+			if (_previousTexture != null)
+			{
+				imgCard.Texture = _previousTexture;
+			}
+			_previousTexture = null; // Сбрасываем предыдущую, так как текущая не изменилась
+		}
+        AdjustSpriteToTargetObject();
+	}
+
+    public void ResetTexture(){
+        imgCard.Texture = _previousTexture;
+        _previousTexture = null;
+        AdjustSpriteToTargetObject();
+    }
+
+    // Основная функция для подстройки размера спрайта под объект
+	private void AdjustSpriteToTargetObject()
+	{
+		
+        Vector3 objectSize = Scale * 5.8f; // Или используйте AABB.Size
+
+		// Применяем отступ к размерам объекта
+		float effectiveWidth = objectSize.X * (1.0f - 2.0f * 0.1f);
+		float effectiveHeight = objectSize.Y * (1.0f - 2.0f * 0.1f); // Предполагаем, что Y - это высота в 3D
+
+		// Получаем размеры текстуры в пикселях
+		Vector2 textureSize = imgCard.Texture.GetSize();
+
+		// Избегаем деления на ноль
+		if (textureSize.X <= 0 || textureSize.Y <= 0)
+		{
+			GD.PrintErr("Texture has invalid dimensions.");
+			return;
+		}
+
+		// Рассчитываем пропорции текстуры
+		float textureAspectRatio = textureSize.X / textureSize.Y;
+
+		// Рассчитываем пропорции эффективной области объекта
+		// В Godot 3D, Sprite3D по умолчанию направлен так, что Y - это высота.
+		// Поэтому эффективная высота соответствует Y объекта, а эффективная ширина - X.
+		float effectiveAspectRatio = effectiveWidth / effectiveHeight;
+
+		// Определяем, по какой стороне мы будем масштабировать
+		float targetPixelSize;
+		if (textureAspectRatio > effectiveAspectRatio)
+		{
+			// Текстура шире относительно своей высоты, чем эффективная область.
+			// Ограничиваемся эффективной шириной объекта.
+			// EffectiveWidth = TextureWidth * PixelSize
+			// PixelSize = EffectiveWidth / TextureWidth
+			targetPixelSize = effectiveWidth / textureSize.X;
+		}
+		else
+		{
+			// Текстура выше относительно своей ширины, чем эффективная область.
+			// Ограничиваемся эффективной высотой объекта.
+			// EffectiveHeight = TextureHeight * PixelSize
+			// PixelSize = EffectiveHeight / TextureHeight
+			targetPixelSize = effectiveHeight / textureSize.Y;
+		}
+
+		imgCard.PixelSize = targetPixelSize;
+	}
+
     public async void MoveTo(CardPlace cp){
         if (cp == null)
         {
@@ -45,12 +153,12 @@ public partial class CardPlayer : Node3D
 			tween.SetEase(Tween.EaseType.Out);
 			tween.SetTrans(Tween.TransitionType.Quad);
 		}
-        
 		tween.TweenProperty(this, "global_position", targetPosition, MoveDuration);
     }   
      
     public override void _Ready()
     {
+        isCardHidden = false;
         cc = GetNode<CardController>("/root/CardController");
         if (cc == null)
         {
