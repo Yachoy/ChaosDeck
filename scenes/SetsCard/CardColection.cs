@@ -75,7 +75,7 @@ public partial class CardColection : Node2D
     }
     public void B2M()
     {
-        GetTree().ChangeSceneToFile("res://scenes/main_menu.tscn");
+        GetTree().ChangeSceneToFile("res://scenes/Menu/main_menu.tscn");
     }
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)

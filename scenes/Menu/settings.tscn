@@ -1,11 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://dsgqli07121o0"]
 
-[ext_resource type="Script" path="res://scenes/settings.cs" id="1_yq6a6"]
+[ext_resource type="Script" path="res://scripts/menus/settings.cs" id="1_b8wbx"]
 
 [sub_resource type="Theme" id="Theme_oxdrp"]
 
 [node name="settings" type="Node2D"]
-script = ExtResource("1_yq6a6")
+script = ExtResource("1_b8wbx")
 
 [node name="MainContainer" type="HBoxContainer" parent="."]
 offset_left = -1.0

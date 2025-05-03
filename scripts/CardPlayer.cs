@@ -28,7 +28,7 @@ public partial class CardPlayer : Node3D
 		is_another = true;
 	}
     
-    public async void MoveTo(CardPlace cp){
+    public void MoveTo(CardPlace cp){
         if (cp == null)
         {
             GD.PrintErr("CardPlace is null, cannot move.");

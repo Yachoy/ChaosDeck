@@ -34,9 +34,13 @@ public partial class main_menu : Node2D
         exit = GetNode<Button>(new NodePath("all_menu_BoxContainer/menu_BoxContainer/exit_button"));
         exit.Pressed += Exit_Pressed;
         Read();
-        
-        
-        
+        Theme themeManager = CreateMenuButtonTheme();
+        var uiRoot = GetNode<Control>("all_menu_BoxContainer");
+        if (uiRoot != null)
+        {
+            uiRoot.Theme = themeManager;
+            GD.Print("Проверка проверки");
+        }
     }
     public static void Read() {
         fullscr = Load("res://resources/Storage/settings.json", "Fullscreen");
@@ -66,7 +70,7 @@ public partial class main_menu : Node2D
         GetTree().ChangeSceneToFile("res://scenes/SetsCard/card_colection.tscn");
     }
 
-    private async void _PressedStory()
+    private void _PressedStory()
     {
 
         GetTree().ChangeSceneToFile("res://scenes/Menu/story_menu.tscn");
@@ -82,7 +86,7 @@ public partial class main_menu : Node2D
         GetTree().ChangeSceneToFile("res://scenes/Menu/settings.tscn");
         
     }
-    //параметры, СУКА!!!!!!!!!!!!!!!!!
+
     public static void Save(string fullPath, string jsonKey)
     {
         var data = new Dictionary { { jsonKey, fullscr } };
@@ -103,30 +107,38 @@ public partial class main_menu : Node2D
     public override void _Process(double delta)
 	{
     }
-
-    public override void _Input(InputEvent @event)
+    public Theme CreateMenuButtonTheme()
     {
-        GD.Print(@event.AsText());    
-       switch (@event){
-            case InputEventKey eventKey:
-                if (eventKey.Pressed && eventKey.Keycode == Key.Escape)
-                {
-                    GD.Print("не работаю");
-                    GetTree().Quit();
-                }
-                break;
-            case InputEventMouseButton eventMouse:
-                
-                if (false)
-                {
-                    
-                    GD.Print("Левую кнопку нажал!");
-                    GetTree().Quit();
-                }
-                break;
-            
-        }
+        Theme theme = new Theme();
+        theme.SetColor("font_color", "Button", new Color(0.0f, 0.0f, 0.0f, 1f));
+        Font customFont = ResourceLoader.Load<FontFile>("res://resources/menuThemes/black-and-white-picture-cyrillic.ttf");
+        theme.SetFont("font", "Label", customFont);
+        theme.SetFontSize("font_size", "Label", 40);
+        theme.SetFont("font", "Button", customFont);
+        theme.SetFontSize("font_size", "Button", 40);
+
+        var normalButtonStyle = new StyleBoxFlat();
+        normalButtonStyle.BgColor = new Color(0.0f, 0.0f, 0.0f, 0.0f);
+        normalButtonStyle.CornerRadiusTopLeft = 5;
+        normalButtonStyle.CornerRadiusTopRight = 5;
+        normalButtonStyle.CornerRadiusBottomLeft = 5;
+        normalButtonStyle.CornerRadiusBottomRight = 5;
+        normalButtonStyle.ContentMarginLeft = 10; // Отступ слева для текста/иконки
+        normalButtonStyle.ContentMarginRight = 10;
+        normalButtonStyle.ContentMarginTop = 5;
+        normalButtonStyle.ContentMarginBottom = 5;
+        theme.SetStylebox("normal", "Button", normalButtonStyle);
+
+        // Стиль для кнопки при наведении
+        var hoverButtonStyle = new StyleBoxFlat();
+        hoverButtonStyle.BgColor = new Color((238/255), (209/255), (141/255), 0.4f);
+        hoverButtonStyle.SetCornerRadiusAll(5); // Установить все углы сразу
+        hoverButtonStyle.ContentMarginLeft = 10;
+        hoverButtonStyle.ContentMarginRight = 10;
+        hoverButtonStyle.ContentMarginTop = 5;
+        hoverButtonStyle.ContentMarginBottom = 5;
+        theme.SetStylebox("hover", "Button", hoverButtonStyle);
+
+        return theme;
     }
- 
-    
 }

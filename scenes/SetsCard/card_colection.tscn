@@ -1,11 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://c5m1ub2t17nhl"]
 
-[ext_resource type="Script" path="res://scenes/CardColection.cs" id="1_pcjmg"]
+[ext_resource type="Script" path="res://scenes/SetsCard/CardColection.cs" id="1_jm0fc"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_4mm1k"]
 
 [node name="Node2D" type="Node2D"]
-script = ExtResource("1_pcjmg")
+script = ExtResource("1_jm0fc")
 
 [node name="MainContainer" type="HBoxContainer" parent="."]
 offset_left = -1.0
