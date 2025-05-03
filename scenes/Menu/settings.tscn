@@ -8,10 +8,12 @@
 script = ExtResource("1_b8wbx")
 
 [node name="MainContainer" type="HBoxContainer" parent="."]
-offset_left = -1.0
-offset_top = -1.0
-offset_right = 1139.0
-offset_bottom = 641.0
+clip_contents = true
+anchors_preset = -1
+offset_right = 1153.0
+offset_bottom = 647.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 40

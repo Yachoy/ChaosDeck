@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Security.Cryptography.X509Certificates;
+using ThemeManager;
 
 [GlobalClass]
 public partial class settings : Node2D
@@ -16,6 +17,9 @@ public partial class settings : Node2D
 		fullScreen = GetNode<CheckBox>(new NodePath("MainContainer/VFlowContainer/FullScrean_CheckBox"));
         fullScreen.Toggled += FullScreen_Toggled;
 		fs = main_menu.fullscr;
+		Theme theme = Themes.CreateMenuButtonTheme();
+		var uiRoot = GetNode<Control>(new NodePath("MainContainer"));
+		uiRoot.Theme = theme;
 		if (fs) {
 			fullScreen.ButtonPressed = true;
 		}
