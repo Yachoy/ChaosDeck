@@ -1,0 +1,69 @@
+[gd_scene load_steps=6 format=3 uid="uid://wu4rumepgjob"]
+
+[ext_resource type="Script" path="res://scripts/CardUI.cs" id="1_2thj7"]
+[ext_resource type="Texture2D" uid="uid://cqc6oekkwqerg" path="res://resources/CardsStorage/images/dwarf.png" id="1_yn1xp"]
+
+[sub_resource type="Gradient" id="Gradient_wpegq"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(0.923962, 0.725602, 0.225162, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_umws0"]
+gradient = SubResource("Gradient_wpegq")
+width = 100
+height = 105
+fill_from = Vector2(0.695513, 0.722222)
+fill_to = Vector2(0.744872, 0.324786)
+
+[sub_resource type="LabelSettings" id="LabelSettings_5pwi5"]
+font_size = 18
+font_color = Color(0, 0, 0, 1)
+outline_size = 32
+
+[node name="UiCard" type="Node2D" node_paths=PackedStringArray("target", "mana", "type", "damage", "hp")]
+position = Vector2(233, 216)
+script = ExtResource("1_2thj7")
+target = NodePath("Sprite2D")
+mana = NodePath("ManaT")
+type = NodePath("TypeT")
+damage = NodePath("DamageT")
+hp = NodePath("HpT")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+scale = Vector2(1, 1.08)
+texture = SubResource("GradientTexture2D_umws0")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.3, 0.27)
+texture = ExtResource("1_yn1xp")
+
+[node name="TypeT" type="Label" parent="."]
+offset_left = -58.0
+offset_top = -63.0
+offset_right = -37.0
+offset_bottom = -37.0
+text = "23"
+label_settings = SubResource("LabelSettings_5pwi5")
+
+[node name="ManaT" type="Label" parent="."]
+offset_left = 38.0
+offset_top = -63.0
+offset_right = 59.0
+offset_bottom = -37.0
+text = "23"
+label_settings = SubResource("LabelSettings_5pwi5")
+
+[node name="HpT" type="Label" parent="."]
+offset_left = -58.0
+offset_top = 35.0
+offset_right = -37.0
+offset_bottom = 61.0
+text = "23"
+label_settings = SubResource("LabelSettings_5pwi5")
+
+[node name="DamageT" type="Label" parent="."]
+offset_left = 38.0
+offset_top = 35.0
+offset_right = 59.0
+offset_bottom = 61.0
+text = "23"
+label_settings = SubResource("LabelSettings_5pwi5")
