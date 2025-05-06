@@ -1,33 +1,123 @@
 [
-  {
-	"name": "Warrior",
-	"hp": 10,
-	"damage": 3,
-	"cost": 2,
-	"type": "Melee",
-	"image_path": "warrior.png",
-	"vars": {
-	  "special_ability": "Charge",
-	  "armor": 1
+	{
+		"name": "Elf warrior",
+		"hp": 9,
+		"damage": 3,
+		"cost": 1,
+		"element": "Destiny",
+		"type": "Melee",
+		"image_path": "warrior.png",
+		"vars": {
+			"special_ability": { "Antimagic medalion": "Have no damage from magic type attaks." }
+		}
+	},
+	{
+		"name": "Militia",
+		"hp": 11,
+		"damage": 4,
+		"cost": 1,
+		"element": "Destiny",
+		"type": "Melee",
+		"image_path": "archer.jpg",
+		"vars": {}
+	},
+	{
+		"name": "Elf scout",
+		"hp": 2,
+		"damage": 6,
+		"cost": 4,
+		"element": "Chaos",
+		"type": "Ranged",
+		"image_path": "dwarf.png",
+		"vars": {
+			"special_ability": { "Ambash": "When opponent play unit card, elf scout hit it." }
+		}
+	},
+	{
+		"name": "Jaeger",
+		"hp": 14,
+		"damage": 5,
+		"cost": 3,
+		"element": "Life",
+		"type": "Ranged",
+		"image_path": "dwarf.png",
+		"vars": {
+			"special_ability": { "Ambash": "When you play the card, choose card if it yours - heal them for 4 hp, if eneme's - inflict 4 damage to it." }
+		}
+	},
+	{
+		"name": "Alive sword",
+		"hp": 10,
+		"damage": 3,
+		"cost": 2,
+		"element": "Chaos",
+		"type": "Melee",
+		"image_path": "dwarf.png",
+		"vars": {}
+	},
+	{
+		"name": "Ancient guardian",
+		"hp": 30,
+		"damage": 7,
+		"cost": 8,
+		"element": "Destiny",
+		"type": "Melee",
+		"image_path": "dwarf.png",
+		"vars": {
+			"special_ability": { "Tactical blow": "When you play the card, it inflict X damage to all opponent's card, where X is half of hp of the card." }
+		}
+	},
+	{
+		"name": "Black cat",
+		"hp": 10,
+		"damage": 1,
+		"cost": 2,
+		"element": "Luck",
+		"type": "Melee",
+		"image_path": "dwarf.png",
+		"vars": {
+			"special_ability": { "Aviation": "When it's aim of spell, spell redirect to another random card. Can't redirect redirected spell or if it's the only one card" }
+		}
+	},
+	{
+		"name": "Chimney sweep",
+		"hp": 8,
+		"damage": 1,
+		"cost": 2,
+		"element": "Luck",
+		"type": "Melee",
+		"image_path": "dwarf.png",
+		"vars": {
+			"special_ability": { "Lucky blessful": "When you play the card, it increase players mana power by 1." }
+		}
+	},
+	{
+		"name": "Elves comander",
+		"hp": 24,
+		"damage": 5,
+		"cost": 5,
+		"element": "Destiny",
+		"type": "Ranged",
+		"image_path": "dwarf.png",
+		"vars": {
+			"special_ability": { "I need dudes": "Spawn elf warrior (3/9) at the specified slot" },
+			"ability_cost": 3
+		}
+	},
+	{
+		"name": "Medic",
+		"hp": 11,
+		"damage": 1,
+		"cost": 2,
+		"element": "Life",
+		"type": "Ranged",
+		"image_path": "dwarf.png",
+		"vars": {
+			"special_ability": { "Ambash": "When you play the card, heal owner by 5 hp." },
+			"ability_cost": 3
+		}
 	}
-  },
-  {
-	"name": "Archer",
-	"hp": 5,
-	"damage": 4,
-	"cost": 3,
-	"type": "Ranged",
-	"image_path": "archer.jpg",
-	"vars": {}
-  },
-  {
-	"name": "Dwarf",
-	"hp": 4,
-	"damage": 5,
-	"cost": 4,
-	"type": "Melee",
-	"image_path": "dwarf.png",
-	"vars": {
-	}
-  }
+
+
+
 ]
