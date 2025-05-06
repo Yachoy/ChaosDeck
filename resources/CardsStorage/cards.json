@@ -18,11 +18,9 @@
 	"cost": 3,
 	"type": "Ranged",
 	"image_path": "archer.jpg",
-	"vars": {
-
-	}
+	"vars": {}
   },
-	{
+  {
 	"name": "Dwarf",
 	"hp": 4,
 	"damage": 5,

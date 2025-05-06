@@ -1,3 +1,4 @@
+using CCSpace;
 using Godot;
 using System;
 using System.Collections.Generic; 
@@ -26,6 +27,8 @@ public partial class HandPlayer : Node3D
 
     [Export]
     public Button btnEndround;
+	[Export]
+    public Panel panelPTP;
 
 	// Массив для карт в руке фиксированного размера
 	private const int MAX_CARDS_IN_HAND = 8;
@@ -72,8 +75,9 @@ public partial class HandPlayer : Node3D
 				cc.RegisterHandPlayer1(this);
 			}
             cc.RegisterButtonEndRound(btnEndround);
+			cc.RegisterMenuParameters((ParamatersTwoPlayers)panelPTP);
             //TODO: Need to replace call to start match
-			cc.StartNewMatch();
+			cc.StartNewMatch(cc.DebugCardSet, cc.DebugCardSet);
 		}
 	}
 

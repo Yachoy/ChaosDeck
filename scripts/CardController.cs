@@ -10,10 +10,10 @@ namespace CCSpace{
 
     public interface ICardBehavior
     {
-        void OnSpawn(CardController cardController, CardData cardData);
-        void OnDeath(CardController cardController, CardData cardData);
-        void OnAttacked(CardController cardController, CardData cardData, int damage);
-        void OnStep(CardController cardController, CardData cardData);
+        void OnSpawn(CardController cardController, CCSpace.CardData.Card cardData);
+        void OnDeath(CardController cardController, CCSpace.CardData.Card cardData);
+        void OnAttacked(CardController cardController, CCSpace.CardData.Card cardData, int damage);
+        void OnStep(CardController cardController, CCSpace.CardData.Card cardData);
         void OnEvent(CardController cardController, string eventName, object eventData);
     }
     
@@ -115,30 +115,50 @@ namespace CCSpace{
     }
     
     public class CardSetData{
-		List<CardData> cards;
-
-		public CardSetData(){
-
-		} 
-        public class CardSet{
+        public readonly int MAX_CARDS_IN_DECK = 50;
+		public class CardSet{
             public CardSet(CardSetData d){
 
             }
         }
         
+        private System.Collections.Generic.Dictionary<string, int> storage;
+        public int CountCards{get; private set;} = 0;
+        public int CountTypesCards{get; private set;} = 0;
+		public CardSetData(){
+            storage = new System.Collections.Generic.Dictionary<string, int>();
+		} 
+        
         public CardSet MakeInstanceForGame(){
             return new CardSet(this);
         }
 
-		public bool TryResolveThisCardSet(List<CardData> cards){
-			return true;
-		}
-
 		public bool TryAdd(CardData card){
-			return true;
+            int value;
+            if(storage.TryGetValue(card.DefaultName, out value)){
+                GD.Print("Find", value);
+                if (value >= 3){return false;}
+                storage[card.DefaultName] = 1 + storage[card.DefaultName];
+                CountCards += 1;
+            }else{
+                GD.Print("Don't find", value);
+                if (CountCards >= MAX_CARDS_IN_DECK){return false;}
+                storage[card.DefaultName] = 1;
+                CountCards += 1;
+                CountTypesCards += 1;
+            }
+            return true;
 		}
 
-		public bool TryTakeAway(String cardName){
+		public bool TryTakeAway(CardData card){
+            int value;
+            if(!storage.TryGetValue(card.DefaultName, out value)){return false;}
+            CountCards -= 1;
+            storage[card.DefaultName] -= 1;
+            if(storage[card.DefaultName] <= 0){
+                storage.Remove(card.DefaultName);
+                CountTypesCards -= 1;
+            }
 			return true;
 		}
 	}
@@ -158,12 +178,11 @@ namespace CCSpace{
             {
                 throw new System.ArgumentNullException(nameof(absoluteCardsFolderPath), "Путь к папке с картами не может быть пустым.");
             }
-            if (!Directory.Exists(absoluteCardsFolderPath))
+            
+            if (!DirAccess.DirExistsAbsolute(absoluteCardsFolderPath))
             {
                 throw new System.IO.DirectoryNotFoundException($"Папка с картами не найдена: {absoluteCardsFolderPath}");
             }
-            
-
 
             _cardsFolderPath = absoluteCardsFolderPath;
             _imagesBasePath = Path.Combine(_cardsFolderPath, "images");
@@ -240,11 +259,17 @@ namespace CCSpace{
 
 namespace HotSpotPlaying{
     public class Player{
-        int mana;
-        int max_mana;
-        int hp;
+        int mana = 1;
+        int max_mana = 1;
+        int hp = 40;
 
-        List<CCSpace.CardSetData.CardSet> actualDeck;
+        CCSpace.CardSetData.CardSet actualDeck;
+
+        public Player(CCSpace.CardSetData.CardSet deck)
+        {
+            actualDeck = deck;
+        }
+
     }
 
     public class Match{
@@ -266,29 +291,67 @@ namespace HotSpotPlaying{
 
 }
 
+
+class DemoBegaviour : CCSpace.ICardBehavior{
+        public void OnSpawn(CardController cardController, CCSpace.CardData.Card cardData){}
+        public void OnDeath(CardController cardController, CCSpace.CardData.Card cardData) {}
+        public void OnAttacked(CardController cardController, CCSpace.CardData.Card cardData, int damage){}
+        public void OnStep(CardController cardController, CCSpace.CardData.Card cardData){}
+        public void OnEvent(CardController cardController, string eventName, object eventData){}
+}
+
+
 public partial class CardController : Node
 {
 
     HandPlayer hp1;
     HandPlayer hp2;
+    ParamatersTwoPlayers ptp;
 
     private bool is_button_endr_set;
     private HotSpotPlaying.Match match;
 
     private bool round_player1 = true;
 
+    public CardSetData DebugCardSet = new CardSetData();
+
+    public CardLoader StorageCards = new CardLoader("res://resources/CardsStorage/", new System.Collections.Generic.Dictionary<string, ICardBehavior>{
+            {"Archer", new DemoBegaviour()},
+            {"Warrior", new DemoBegaviour()},
+            {"Dwarf", new DemoBegaviour()}
+    });
+
 	public override void _Ready()
 	{
+        int c = 0;
+        foreach(CardData v in StorageCards.LoadedCards){
+            if(!DebugCardSet.TryAdd(v)){
+                GD.Print("Can't add...");
+            }
+            c += 1;
+            if (c >= 10){ break; }
+        }
+        GD.Print(DebugCardSet.CountCards);
 	}
 
     
+    public bool StartNewMatch(CardSetData deck1, CardSetData deck2){
+        if (deck1.CountTypesCards < 2){
+            GD.PushWarning("Count cards in deck1 less then 10, return false");
+            return false;
+        }
+        if (deck2.CountTypesCards < 2){
+            GD.PushWarning("Count cards in deck2 less then 10, return false");
+            return false;
+        }
 
-    public bool StartNewMatch(){
-        
         if (hp1 is null || hp2 is  null){
             return false;
         }
-        match = new HotSpotPlaying.Match(new HotSpotPlaying.Player(), new HotSpotPlaying.Player());
+        match = new HotSpotPlaying.Match(
+            new HotSpotPlaying.Player(deck1.MakeInstanceForGame()), 
+            new HotSpotPlaying.Player(deck2.MakeInstanceForGame())
+        );
         if (!((CardPlayer)hp2.cards[0]).isCardHidden){
             foreach(CardPlayer n in hp2.cards){
                 if (n is null) continue;
@@ -311,6 +374,10 @@ public partial class CardController : Node
         if (is_button_endr_set) return;
         btn.Pressed += MakeRound;
         is_button_endr_set = true;
+    }
+
+    public void RegisterMenuParameters(ParamatersTwoPlayers ptp){
+        this.ptp = ptp;
     }
     
     public bool IsPlayer1Round(){
