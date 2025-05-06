@@ -7,6 +7,7 @@ public partial class CardColection : Node2D
     GridContainer gc { get; set; }
     Label description;
     Button b2m;
+    
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
