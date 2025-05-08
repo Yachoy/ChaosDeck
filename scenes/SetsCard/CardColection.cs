@@ -1,12 +1,15 @@
+using CCSpace;
 using Godot;
 using Godot.NativeInterop;
 using System;
 
-public partial class CardColection : Node2D
+public partial class CardColection : Node
 {
     GridContainer gc { get; set; }
     Label description;
     Button b2m;
+    CardLoader loader;
+    Node2D[] allCards;
     
 
     // Called when the node enters the scene tree for the first time.
@@ -14,9 +17,12 @@ public partial class CardColection : Node2D
     {
         gc = GetNode<GridContainer>(new NodePath("MainContainer/VFlowContainer/allCards_GridContainer/cards_GridContainer"));
         description = GetNode<Label>(new NodePath("MainContainer/VFlowContainer2/cardDescriprtion_Label"));
-        
+        //loader = new CardLoader("res://resources/CardsStorage/cards.json", );
+        //loader._
         b2m = GetNode<Button>(new NodePath("MainContainer/VFlowContainer/HBoxContainer/menu_VBoxContainer/back2menu_button"));
         b2m.Pressed += B2M;
+
+
     }
 
     public void Enter(Control control)

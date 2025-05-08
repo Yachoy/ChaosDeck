@@ -1,25 +1,25 @@
-[gd_scene load_steps=3 format=3 uid="uid://dsgqli07121o0"]
+[gd_scene load_steps=5 format=3 uid="uid://dsgqli07121o0"]
 
 [ext_resource type="Script" path="res://scripts/menus/settings.cs" id="1_b8wbx"]
+[ext_resource type="ArrayMesh" uid="uid://b6edmhw2rsy04" path="res://scenes/Models/meshes/book_background_Cube.res" id="2_21yji"]
+[ext_resource type="ArrayMesh" uid="uid://dt1trmvfctava" path="res://scenes/Models/meshes/book_background_Куб_002.res" id="3_bq38a"]
 
 [sub_resource type="Theme" id="Theme_oxdrp"]
 
-[node name="settings" type="Node2D"]
+[node name="settings" type="Node3D"]
 script = ExtResource("1_b8wbx")
 
 [node name="MainContainer" type="HBoxContainer" parent="."]
 clip_contents = true
-anchors_preset = -1
-offset_right = 1153.0
+offset_left = 5.0
+offset_right = 1155.0
 offset_bottom = 647.0
-grow_horizontal = 2
-grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 40
 
 [node name="VFlowContainer" type="VBoxContainer" parent="MainContainer"]
-custom_minimum_size = Vector2(550, 0)
+custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 
 [node name="sound" type="Label" parent="MainContainer/VFlowContainer"]
@@ -59,11 +59,33 @@ text = "Графика"
 layout_mode = 2
 text = "Полноэкранный режим"
 
+[node name="VSeparator" type="VSeparator" parent="MainContainer"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+
 [node name="VFlowContainer2" type="VBoxContainer" parent="MainContainer"]
-custom_minimum_size = Vector2(550, 0)
+custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 size_flags_vertical = 8
 
 [node name="back2menu_button" type="Button" parent="MainContainer/VFlowContainer2"]
 layout_mode = 2
 text = "Вернуться в меню"
+
+[node name="BookBackgroundCube" type="MeshInstance3D" parent="."]
+transform = Transform3D(-8.63227e-08, 0, 0.367893, 0, 1.0063, 0, -1.97483, 0, -1.60811e-08, 0.145394, 0.72644, -0.0257937)
+mesh = ExtResource("2_21yji")
+
+[node name="BookBackgroundКуб002" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.99872e-08, 0, 1, 0, 0.0456752, 0, -1.14357, 0, -4.37114e-08, 1.4878, -0.000766039, -0.00433075)
+cast_shadow = 0
+mesh = ExtResource("3_bq38a")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.0247463, 0.999694, 0, -0.999694, 0.0247463, 0, 0.79844, 0.0757314)
+keep_aspect = 0
+projection = 1
+size = 3.37371
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 3, 0)

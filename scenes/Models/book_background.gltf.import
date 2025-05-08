@@ -1,0 +1,85 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://ba1s25b5liruk"
+path="res://.godot/imported/book_background.gltf-d2c6fbb8719d22a0a6b9bb61b925e36c.scn"
+
+[deps]
+
+source_file="res://scenes/Models/book_background.gltf"
+dest_files=["res://.godot/imported/book_background.gltf-d2c6fbb8719d22a0a6b9bb61b925e36c.scn"]
+
+[params]
+
+nodes/root_type=""
+nodes/root_name=""
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+nodes/import_as_skeleton_bones=false
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+meshes/force_disable_compression=false
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+animation/trimming=false
+animation/remove_immutable_tracks=true
+animation/import_rest_as_RESET=false
+import_script/path=""
+_subresources={
+"materials": {
+"Material": {
+"use_external/enabled": true,
+"use_external/path": "res://scenes/Models/matirials/Material.tres"
+},
+"Бумага": {
+"use_external/enabled": true,
+"use_external/path": "res://scenes/Models/matirials/Бумага.tres"
+}
+},
+"meshes": {
+"book_background_Cube": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://scenes/Models/meshes/book_background_Cube.res"
+},
+"book_background_Куб_001": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://scenes/Models/meshes/book_background_Куб_001.res"
+},
+"book_background_Куб_002": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://scenes/Models/meshes/book_background_Куб_002.res"
+},
+"book_background_Плоскость_001": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": true,
+"save_to_file/path": "res://scenes/Models/meshes/book_background_Плоскость_001.res"
+}
+}
+}
+gltf/naming_version=1
+gltf/embedded_image_handling=1

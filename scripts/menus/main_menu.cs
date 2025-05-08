@@ -10,7 +10,7 @@ using Godot.Collections;
 using System.ComponentModel;
 using ThemeManager;
 
-public partial class main_menu : Node2D
+public partial class main_menu : Node
 {
     Button story;
     Button duel;
@@ -18,12 +18,15 @@ public partial class main_menu : Node2D
     Button sett;
 	Button exit;
     public static bool fullscr;
+    Window cardSetChoose;
     
     // Called when the node enters the scene tree for the first time.
     
     public override void _Ready()
 	{
         GD.Print("Работаю");
+        cardSetChoose = GetNode<Window>(new NodePath("CardSetChecker_Window"));
+        cardSetChoose.Visible = false;
         story = GetNode<Button>(new NodePath("all_menu_BoxContainer/menu_BoxContainer/story_mod_button"));
         story.Pressed += _PressedStory;
         duel = GetNode<Button>(new NodePath("all_menu_BoxContainer/menu_BoxContainer/duel_mod_button"));
@@ -64,10 +67,23 @@ public partial class main_menu : Node2D
 
         return result;
     }
+    public static List<string> LoadCardSet(string fullPath, string jsonKey) 
+    {
+        using var file = Godot.FileAccess.Open(fullPath, Godot.FileAccess.ModeFlags.Read);
+        string jsonString = file.GetAsText();
+        Variant parsedResult = Json.ParseString(jsonString);
+        Dictionary data = parsedResult.As<Dictionary>();
+        List<string> result = new List<string>();
+        foreach (string name in data.Keys)
+        {
+            result.Add(name);    
+        }
+        return result;
+    }
 
     private void _PressedCollection()
     {
-        GetTree().ChangeSceneToFile("res://scenes/SetsCard/card_colection.tscn");
+        cardSetChoose.Visible = true;
     }
 
     private void _PressedStory()
@@ -78,7 +94,7 @@ public partial class main_menu : Node2D
 
     private void _PressedDuel()
     {
-        throw new NotImplementedException();
+        GD.Print("Ля, ну жуй!");
     }
 
     private void _PressedSettings()
@@ -87,9 +103,9 @@ public partial class main_menu : Node2D
         
     }
 
-    public static void Save(string fullPath, string jsonKey)
+    public static void Save(string fullPath, string jsonKey, bool param)
     {
-        var data = new Dictionary { { jsonKey, fullscr } };
+        var data = new Dictionary { { jsonKey, param } };
         string jsonString = Json.Stringify(data, "\t");
         using var file = Godot.FileAccess.Open(fullPath, Godot.FileAccess.ModeFlags.Write);
         file.StoreString(jsonString);       
@@ -99,7 +115,7 @@ public partial class main_menu : Node2D
 
     private void Exit_Pressed()
     {
-        Save("res://resources/Storage/settings.json", "Fullscreen");
+        Save("res://resources/Storage/settings.json", "Fullscreen", fullscr);
         GetTree().Quit();
     }
 
