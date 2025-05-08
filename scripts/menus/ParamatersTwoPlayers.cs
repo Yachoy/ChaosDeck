@@ -22,21 +22,21 @@ public partial class ParamatersTwoPlayers : Panel
 		if(is_player_1){
 			player1_hp.Text = value.ToString();
 		}else{
-			player1_hp.Text = value.ToString();
+			player2_hp.Text = value.ToString();
 		}
 	}
 	public void set_mana(bool is_player_1, int value){
 		if(is_player_1){
 			player1_mana.Text = value.ToString();
 		}else{
-			player1_mana.Text = value.ToString();
+			player2_mana.Text = value.ToString();
 		}
 	}
 	public void set_power_mana(bool is_player_1, int value){
 		if(is_player_1){
 			player1_power_mana.Text = value.ToString();
 		}else{
-			player1_power_mana.Text = value.ToString();
+			player2_power_mana.Text = value.ToString();
 		}
 	}
 }

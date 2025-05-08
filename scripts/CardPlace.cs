@@ -1,3 +1,4 @@
+using CCSpace;
 using Godot;
 using System;
 
@@ -11,13 +12,17 @@ public partial class CardPlace : Node3D
 
 	private CardController cc;
 
-	public bool is_another = false;
+    public bool is_another = false;
 	public bool is_selected = false;
     public bool isAlreadyCardHerePumPumPum = false;
+
+    public int Index{get; private set;}
 
 	public void SetIsAnotherTeam(){
 		is_another = true;
 	}
+    public void SetIndexed(int index) => Index = index;
+    
 	
 	public override void _Ready()
 	{

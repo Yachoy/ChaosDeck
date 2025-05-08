@@ -1,6 +1,7 @@
 using CCSpace;
 using Godot;
 using Godot.Collections;
+using HotSpotPlaying;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,11 +11,11 @@ namespace CCSpace{
 
     public interface ICardBehavior
     {
-        void OnSpawn(CardController cardController, CCSpace.CardData.Card cardData);
-        void OnDeath(CardController cardController, CCSpace.CardData.Card cardData);
-        void OnAttacked(CardController cardController, CCSpace.CardData.Card cardData, int damage);
-        void OnStep(CardController cardController, CCSpace.CardData.Card cardData);
-        void OnEvent(CardController cardController, string eventName, object eventData);
+        void OnSpawn(CardController cardController, Player player, CCSpace.CardData.Card cardData);
+        void OnDeath(CardController cardController, Player player, CCSpace.CardData.Card cardData);
+        void OnAttacked(CardController cardController, Player player, CCSpace.CardData.Card cardData, int damage);
+        void OnStep(CardController cardController, Player player,CCSpace.CardData.Card cardData);
+        void OnEvent(CardController cardController, Player player, string eventName, object eventData);
     }
     
 
@@ -30,9 +31,10 @@ namespace CCSpace{
         public class Card{
             public CardData CardDataOriginal;
 
-            int Hp;
-            int Damage;
-            int Cost;
+            public int Hp;
+            public int Damage;
+            public int Cost;
+            public Texture2D ImageTexture;
             public ICardBehavior Behavior {get; private set;}
 
             public Card(CardData createFrom){
@@ -41,6 +43,7 @@ namespace CCSpace{
                 Damage = createFrom.DefaultDamage;
                 Cost = createFrom.DefaultCost;
                 Behavior = createFrom.Behavior;
+                ImageTexture = createFrom.ImageTexture;
             }
         }
         public string DefaultName { get; private set; }
@@ -116,17 +119,68 @@ namespace CCSpace{
     
     public class CardSetData{
         public readonly int MAX_CARDS_IN_DECK = 50;
-		public class CardSet{
-            public CardSet(CardSetData d){
 
+        public class CardSet
+        {
+            private System.Collections.Generic.Dictionary<string, CardData> storage;
+            private System.Collections.Generic.Dictionary<string, int> currentCounters;
+            private System.Random random;
+            public CardSet(CardSetData csd)
+            {
+                storage = csd.storage;
+                currentCounters = new System.Collections.Generic.Dictionary<string, int>(csd.counters);
+                random = new System.Random();
+            }
+            public CardData DrawCard()
+            {
+                int totalRemaining = 0;
+                foreach (var count in currentCounters.Values)
+                {
+                    totalRemaining += count;
+                }
+
+                double randomNumber = random.NextDouble();
+                double cumulativeProbability = 0.0;
+                GD.Print("Propabilityes. Rand: ",randomNumber);
+                foreach (var cardEntry in currentCounters)
+                {
+                    int count = cardEntry.Value;
+                    double cardProbability = (double)count / totalRemaining;
+                    GD.Print(cardProbability);
+                }
+                GD.Print("-------------");
+                
+                foreach (var cardEntry in currentCounters)
+                {
+                    string cardName = cardEntry.Key;
+                    int count = cardEntry.Value;
+
+                    double cardProbability = (double)count / totalRemaining;
+                    cumulativeProbability += cardProbability;
+                    if (randomNumber < cumulativeProbability)
+                    {
+                        foreach (var card in currentCounters){
+                            if(card.Key != cardName){
+                                currentCounters[card.Key]++;
+                            }
+                        }
+                        return storage[cardName];
+                    }
+                }
+
+                GD.PushWarning("Ошибка при извлечении карты: случайное число не попало ни в один диапазон!");
+                return null;
             }
         }
         
-        private System.Collections.Generic.Dictionary<string, int> storage;
+        private System.Collections.Generic.Dictionary<string, CardData> storage;
+
+        private System.Collections.Generic.Dictionary<string, int> counters;
         public int CountCards{get; private set;} = 0;
         public int CountTypesCards{get; private set;} = 0;
 		public CardSetData(){
-            storage = new System.Collections.Generic.Dictionary<string, int>();
+            storage = new System.Collections.Generic.Dictionary<string, CardData>();
+            counters = new System.Collections.Generic.Dictionary<string, int>();
 		} 
         
         public CardSet MakeInstanceForGame(){
@@ -134,16 +188,18 @@ namespace CCSpace{
         }
 
 		public bool TryAdd(CardData card){
-            int value;
+            CardData value;
             if(storage.TryGetValue(card.DefaultName, out value)){
-                GD.Print("Find", value);
-                if (value >= 3){return false;}
-                storage[card.DefaultName] = 1 + storage[card.DefaultName];
+                //GD.Print("Find", value.DefaultName);
+                 
+                if (counters[card.DefaultName] >= 3){return false;}
+                counters[card.DefaultName] = 1 + counters[card.DefaultName];
                 CountCards += 1;
             }else{
-                GD.Print("Don't find", value);
+                //GD.Print("Don't find", card.DefaultName);
                 if (CountCards >= MAX_CARDS_IN_DECK){return false;}
-                storage[card.DefaultName] = 1;
+                counters[card.DefaultName] = 1;
+                storage[card.DefaultName] = card;
                 CountCards += 1;
                 CountTypesCards += 1;
             }
@@ -151,12 +207,13 @@ namespace CCSpace{
 		}
 
 		public bool TryTakeAway(CardData card){
-            int value;
+            CardData value;
             if(!storage.TryGetValue(card.DefaultName, out value)){return false;}
             CountCards -= 1;
-            storage[card.DefaultName] -= 1;
-            if(storage[card.DefaultName] <= 0){
+            counters[value.DefaultName] -= 1;
+            if(counters[value.DefaultName] <= 0){
                 storage.Remove(card.DefaultName);
+                counters.Remove(card.DefaultName);
                 CountTypesCards -= 1;
             }
 			return true;
@@ -237,9 +294,10 @@ namespace CCSpace{
                         GD.PrintErr($"Can't find ICardBehavior for card {card.DefaultName}");
                     }else{
                         card.SetBehavior(bh);
+                        _cardDataList.Add(card);
+                        GD.Print($"- Загружена карта: {card.DefaultName ?? "Без имени"}");
                     }
-                    _cardDataList.Add(card);
-                    GD.Print($"- Загружена карта: {card.DefaultName ?? "Без имени"}");
+                    
                 }
                 else
                 {
@@ -259,9 +317,11 @@ namespace CCSpace{
 
 namespace HotSpotPlaying{
     public class Player{
-        int mana = 1;
-        int max_mana = 1;
-        int hp = 40;
+        public int mana = 1;
+        public int max_mana = 1;
+        public int hp = 40;
+
+        public CardData.Card[] Field = new CardData.Card[6];
 
         CCSpace.CardSetData.CardSet actualDeck;
 
@@ -270,16 +330,21 @@ namespace HotSpotPlaying{
             actualDeck = deck;
         }
 
+        public CardData.Card GetCardFromDeck(){
+            CardData cd = actualDeck.DrawCard();
+            return cd.MakeInstanceForGame();
+        }
     }
 
     public class Match{
-        Player p1;
-        Player p2;
+        public Player p1;
+        public Player p2;
 
         bool is_first_player_round = true;
 
         public Match(Player p1, Player p2){
-
+            this.p1 = p1;
+            this.p2 = p2;
         }
 
         public bool MakeStep(){
@@ -293,11 +358,11 @@ namespace HotSpotPlaying{
 
 
 class DemoBegaviour : CCSpace.ICardBehavior{
-        public void OnSpawn(CardController cardController, CCSpace.CardData.Card cardData){}
-        public void OnDeath(CardController cardController, CCSpace.CardData.Card cardData) {}
-        public void OnAttacked(CardController cardController, CCSpace.CardData.Card cardData, int damage){}
-        public void OnStep(CardController cardController, CCSpace.CardData.Card cardData){}
-        public void OnEvent(CardController cardController, string eventName, object eventData){}
+        public void OnSpawn(CardController cardController, Player player, CCSpace.CardData.Card cardData){}
+        public void OnDeath(CardController cardController, Player player, CCSpace.CardData.Card cardData) {}
+        public void OnAttacked(CardController cardController, Player player, CCSpace.CardData.Card cardData, int damage){}
+        public void OnStep(CardController cardController, Player player, CCSpace.CardData.Card cardData){}
+        public void OnEvent(CardController cardController, Player player, string eventName, object eventData){}
 }
 
 
@@ -318,7 +383,11 @@ public partial class CardController : Node
     public CardLoader StorageCards = new CardLoader("res://resources/CardsStorage/", new System.Collections.Generic.Dictionary<string, ICardBehavior>{
             {"Archer", new DemoBegaviour()},
             {"Warrior", new DemoBegaviour()},
-            {"Dwarf", new DemoBegaviour()}
+            {"Dwarf", new DemoBegaviour()},
+            {"Elf warrior", new DemoBegaviour()},
+            {"Militia", new DemoBegaviour()},
+            {"Elf scout", new DemoBegaviour()}
+
     });
 
 	public override void _Ready()
@@ -334,6 +403,13 @@ public partial class CardController : Node
         GD.Print(DebugCardSet.CountCards);
 	}
 
+    public Player GetCurrentPlayer(bool reverse = false) => (reverse ? !round_player1 : round_player1) ? match.p1 : match.p2;
+
+    public CardData.Card GetNewCard(bool is_player2){
+        Player p = !is_player2 ? match.p1 : match.p2;
+        GD.Print("Player ", is_player2 ? "1" : "2");
+        return p.GetCardFromDeck();
+    }
     
     public bool StartNewMatch(CardSetData deck1, CardSetData deck2){
         if (deck1.CountTypesCards < 2){
@@ -352,6 +428,10 @@ public partial class CardController : Node
             new HotSpotPlaying.Player(deck1.MakeInstanceForGame()), 
             new HotSpotPlaying.Player(deck2.MakeInstanceForGame())
         );
+        hp1.SpawnStartPlaces();
+        hp1.SpawnStartCards();
+		hp2.SpawnStartPlaces();
+        hp2.SpawnStartCards();
         if (!((CardPlayer)hp2.cards[0]).isCardHidden){
             foreach(CardPlayer n in hp2.cards){
                 if (n is null) continue;
@@ -364,6 +444,7 @@ public partial class CardController : Node
                 n.SwitchViewCard();
             }
         } 
+        HandlePlayerStatForLabels();
         return true;
     }
 
@@ -376,9 +457,7 @@ public partial class CardController : Node
         is_button_endr_set = true;
     }
 
-    public void RegisterMenuParameters(ParamatersTwoPlayers ptp){
-        this.ptp = ptp;
-    }
+    public void RegisterMenuParameters(ParamatersTwoPlayers ptp) => this.ptp = ptp;
     
     public bool IsPlayer1Round(){
         return round_player1;
@@ -390,17 +469,33 @@ public partial class CardController : Node
             if (n is null) continue;
             n.SwitchViewCard();
         }
+        Player p = GetCurrentPlayer(true);
+        p.max_mana = p.max_mana + 1;
+        p.mana = p.max_mana;
+        HandlePlayerStatForLabels();
     }
-
+    
     public bool ProcessCardPlacement(CardPlayer card, CardPlace place){
+        Player player = GetCurrentPlayer();
+        if (player.mana < card.cardInstanceInfo.Cost){
+            GD.Print("Player haven't enought mana");
+            return false;
+        }
+        player.mana -= card.cardInstanceInfo.Cost;
+        player.Field[place.Index] = card.cardInstanceInfo;
+        HandlePlayerStatForLabels();
         return true;
     }
 
-	public override void _Process(double delta)
-	{
+    public void HandlePlayerStatForLabels(){
+        ptp.set_mana(true, match.p1.mana);
+        ptp.set_hp(true, match.p1.hp);
+        ptp.set_power_mana(true, match.p1.max_mana);
 
-	}
-
+        ptp.set_mana(false, match.p2.mana);
+        ptp.set_hp(false, match.p2.hp);
+        ptp.set_power_mana(false, match.p2.max_mana);
+    }
     public bool SetActualmatch(){
         return false;
     }

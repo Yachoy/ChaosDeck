@@ -38,6 +38,15 @@ public partial class CardPlayer : Node3D
 	public void SetIsAnotherTeam(){
 		is_another = true;
 	}
+
+    public CCSpace.CardData.Card cardInstanceInfo;
+	public void GenerateCard(){
+        cardInstanceInfo = cc.GetNewCard(is_another);
+        ChangeTexture(cardInstanceInfo.ImageTexture);
+        nodes[1].GetChild<Label3D>(0).Text = cardInstanceInfo.Cost.ToString();
+        nodes[2].GetChild<Label3D>(0).Text = cardInstanceInfo.Hp.ToString();
+        nodes[3].GetChild<Label3D>(0).Text = cardInstanceInfo.Damage.ToString();
+    }
     
     public bool SwitchViewCard(){
         if (is_placed) return false;
@@ -63,20 +72,27 @@ public partial class CardPlayer : Node3D
 	{
 		_previousTexture = imgCard.Texture;
 		var newTexture = GD.Load<Texture2D>(newTexturePath);
+        ChangeTexture(newTexture);
+	}
 
-		if (newTexture != null)
+    public void ChangeTexture(Texture2D texture)
+	{
+		_previousTexture = imgCard.Texture;
+		
+		if (texture != null)
 		{
-			imgCard.Texture = newTexture;
+			imgCard.Texture = texture;
 		}
 		else
 		{
-			GD.PrintErr($"Error: Could not load texture from path: {newTexturePath}");
+			GD.PrintErr($"Error: Could not load texture");
 			if (_previousTexture != null)
 			{
 				imgCard.Texture = _previousTexture;
 			}
 			_previousTexture = null; // Сбрасываем предыдущую, так как текущая не изменилась
 		}
+
         AdjustSpriteToTargetObject();
 	}
 
@@ -87,8 +103,16 @@ public partial class CardPlayer : Node3D
     }
 
     // Основная функция для подстройки размера спрайта под объект
-	private void AdjustSpriteToTargetObject()
+	public void AdjustSpriteToTargetObject()
 	{
+
+        if (cc.GetCurrentPlayer().mana >= cardInstanceInfo.Cost){
+            imgCard.Modulate = new Color(1, 1, 1, 1);
+            GD.Print("NIIIGAB");
+        }else{
+            GD.Print("No nigab ", $"{cc.GetCurrentPlayer().mana}, {cardInstanceInfo.Cost}");
+            imgCard.Modulate = new Color(0.6f, 0.6f, 0.6f, 1);
+        }
 		
         Vector3 objectSize = Scale * 5.8f; // Или используйте AABB.Size
 
