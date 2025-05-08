@@ -1,21 +1,22 @@
-[gd_scene load_steps=3 format=3 uid="uid://c5m1ub2t17nhl"]
+[gd_scene load_steps=5 format=3 uid="uid://c5m1ub2t17nhl"]
 
 [ext_resource type="Script" path="res://scenes/SetsCard/CardColection.cs" id="1_jm0fc"]
+[ext_resource type="ArrayMesh" uid="uid://b6edmhw2rsy04" path="res://scenes/Models/meshes/book_background_Cube.res" id="2_vafwi"]
+[ext_resource type="ArrayMesh" uid="uid://dt1trmvfctava" path="res://scenes/Models/meshes/book_background_Куб_002.res" id="3_aftda"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_4mm1k"]
 
-[node name="Node2D" type="Node2D"]
+[node name="Node2D" type="Node3D"]
 script = ExtResource("1_jm0fc")
 
 [node name="MainContainer" type="HBoxContainer" parent="."]
-offset_left = -1.0
-offset_top = -1.0
-offset_right = 1139.0
-offset_bottom = 641.0
-theme_override_constants/separation = 40
+offset_left = -2.0
+offset_right = 1148.0
+offset_bottom = 642.0
+theme_override_constants/separation = 100
 
 [node name="VFlowContainer" type="VBoxContainer" parent="MainContainer"]
-custom_minimum_size = Vector2(550, 0)
+custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 
 [node name="elements_HBoxContainer" type="HBoxContainer" parent="MainContainer/VFlowContainer"]
@@ -84,7 +85,7 @@ layout_mode = 2
 text = "Отменить"
 
 [node name="VFlowContainer2" type="VBoxContainer" parent="MainContainer"]
-custom_minimum_size = Vector2(550, 0)
+custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -115,3 +116,21 @@ layout_mode = 2
 [node name="cardDescriprtion_Label" type="Label" parent="MainContainer/VFlowContainer2"]
 custom_minimum_size = Vector2(0, 175)
 layout_mode = 2
+
+[node name="BookBackgroundCube" type="MeshInstance3D" parent="."]
+transform = Transform3D(-8.63227e-08, 0, 0.367893, 0, 1.0063, 0, -1.97483, 0, -1.60811e-08, 0.145394, 0.72644, -0.0257937)
+mesh = ExtResource("2_vafwi")
+
+[node name="BookBackgroundКуб002" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.99872e-08, 0, 1, 0, 0.0456752, 0, -1.14357, 0, -4.37114e-08, 1.4878, -0.000766039, -0.00433075)
+cast_shadow = 0
+mesh = ExtResource("3_aftda")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.0247463, 0.999694, 0, -0.999694, 0.0247463, 0, 0.79844, 0.0757314)
+keep_aspect = 0
+projection = 1
+size = 3.37371
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 3, 0)

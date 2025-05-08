@@ -4,7 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 using ThemeManager;
 
 [GlobalClass]
-public partial class settings : Node2D
+public partial class settings : Node
 {
 	Button back;
 	CheckBox fullScreen;
@@ -38,7 +38,7 @@ public partial class settings : Node2D
 			DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
 		}
 		main_menu.fullscr = toggledOn;
-        main_menu.Save("res://resources/storage/settings.json", "Fullscreen");
+        main_menu.Save("res://resources/storage/settings.json", "Fullscreen", main_menu.fullscr);
     }
 
     public void Back_Pressed() {

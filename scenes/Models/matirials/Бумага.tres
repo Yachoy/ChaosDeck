@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://tl1a88clvk8v"]
+
+[resource]
+resource_name = "Бумага"
+cull_mode = 2
+albedo_color = Color(0.906605, 0.81955, 0.558372, 1)
+roughness = 0.5

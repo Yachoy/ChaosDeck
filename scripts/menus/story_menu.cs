@@ -2,8 +2,9 @@ using Godot;
 using System;
 using System.IO;
 using System.Text.Json;
+using ThemeManager;
 
-public partial class story_menu : Node2D
+public partial class story_menu : Node
 {
 	Button newGameB;
 	Button loadGameB;
@@ -20,7 +21,12 @@ public partial class story_menu : Node2D
         continueGameB.Pressed += ContinGame;
         back2menuB = GetNode<Button>(new NodePath("MainContainer/VFlowContainer2/HBoxContainer/back2menu_button"));
         back2menuB.Pressed += B2M;
-		
+        Theme themeManager = Themes.CreateMenuButtonTheme();
+        var uiRoot = GetNode<Control>("MainContainer");
+        if (uiRoot != null)
+        {
+            uiRoot.Theme = themeManager;
+        }
     }
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
