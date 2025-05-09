@@ -47,9 +47,10 @@ namespace CCSpace{
             }
         }
         public string DefaultName { get; private set; }
-        public int DefaultHp { get; set; }
+        public int DefaultHp { get; private set; }
         public int DefaultDamage { get; private set; }
         public int DefaultCost { get; private set; }
+        public string Element { get; private set; }
         public TypesCards CardType { get; private set; }
         public Texture2D ImageTexture { get; private set; }
         public Dictionary Vars { get; private set; }

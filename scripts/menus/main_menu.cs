@@ -67,17 +67,13 @@ public partial class main_menu : Node
 
         return result;
     }
-    public static List<string> LoadCardSet(string fullPath, string jsonKey) 
+    public static Dictionary LoadCardSet(string fullPath) 
     {
         using var file = Godot.FileAccess.Open(fullPath, Godot.FileAccess.ModeFlags.Read);
         string jsonString = file.GetAsText();
         Variant parsedResult = Json.ParseString(jsonString);
-        Dictionary data = parsedResult.As<Dictionary>();
-        List<string> result = new List<string>();
-        foreach (string name in data.Keys)
-        {
-            result.Add(name);    
-        }
+        Dictionary result = parsedResult.As<Dictionary>();
+        
         return result;
     }
 
