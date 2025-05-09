@@ -3,6 +3,7 @@ using Godot;
 using System;
 using System.Collections.Generic; 
 
+
 public partial class HandPlayer : Node3D
 {
 	[Export]
@@ -74,7 +75,6 @@ public partial class HandPlayer : Node3D
             cc.RegisterButtonEndRound(btnEndround);
 			cc.RegisterMenuParameters((ParamatersTwoPlayers)panelPTP);
 		}
-		//TODO: Need to replace call to start match
 		cc.StartNewMatch(cc.DebugCardSet, cc.DebugCardSet);
 	}
 
@@ -228,9 +228,20 @@ public partial class HandPlayer : Node3D
 		newCard.QueueFree(); // Удаляем узел, если руку полна
 	}
 
+	public void UpdateVisibilityCards(){
+		foreach (var card in cards)
+		{
+			if (card != null)
+			{
+				card.AdjustSpriteToTargetObject();
+			}
+		}
+	}
+
 	// Перебалансирует карты в руке, сдвигая их и анимируя движение
 	private void BalanceCardsInHand()
 	{
+		UpdateVisibilityCards();
 		GD.Print("Balancing cards in hand...");
 		// Создаем временный список только из не-null элементов
 		var activeCards = new List<CardPlayer>();
@@ -284,5 +295,38 @@ public partial class HandPlayer : Node3D
 			}
 		}
 		return -1; // Рука полна
+	}
+
+	private const float CARD_ATTACK_DISTANCE = 0.5f; // How far the card moves along the Z-axis of the HandPlayer.
+	private const float CARD_ATTACK_DURATION_FORWARD = 0.15f; // Duration for the forward movement.
+	private const float CARD_ATTACK_DURATION_BACKWARD = 0.15f; // Duration for the backward movement.
+
+	public void AnimateCardAttack(CardPlayer cardToAnimate)
+	{
+		if (cardToAnimate == null || !IsInstanceValid(cardToAnimate))
+		{
+			GD.PrintErr("AnimateCardAttack: Card to animate is null or invalid.");
+			return;
+		}
+
+		Vector3 originalPosition = cardToAnimate.Position;
+
+		float zDisplacementDirection = !IsAnotherTeam ? -1.0f : 1.0f;
+		Vector3 attackDisplacement = new Vector3(0, 0, CARD_ATTACK_DISTANCE * zDisplacementDirection);
+		
+		Vector3 targetForwardPosition = originalPosition + attackDisplacement;
+
+		Tween attackTween = cardToAnimate.CreateTween();
+		attackTween.SetParallel(false); 
+
+		attackTween.TweenProperty(cardToAnimate, "position", targetForwardPosition, CARD_ATTACK_DURATION_FORWARD)
+				   .SetEase(Tween.EaseType.Out)       // Animation eases out (starts fast, ends slow).
+				   .SetTrans(Tween.TransitionType.Quad); // Uses quadratic interpolation for smooth movement.
+
+		// 2. Animate the card moving back to its original position.
+		attackTween.TweenProperty(cardToAnimate, "position", originalPosition, CARD_ATTACK_DURATION_BACKWARD)
+				   .SetEase(Tween.EaseType.In)        // Animation eases in (starts slow, ends fast).
+				   .SetTrans(Tween.TransitionType.Quad); // Uses quadratic interpolation.
+		
 	}
 }

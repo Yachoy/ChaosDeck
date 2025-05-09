@@ -43,11 +43,15 @@ public partial class CardPlayer : Node3D
 	public void GenerateCard(){
         cardInstanceInfo = cc.GetNewCard(is_another);
         ChangeTexture(cardInstanceInfo.ImageTexture);
+        UpdateStatisticeOnTheCards();
+    }
+    
+    public void UpdateStatisticeOnTheCards(){
         nodes[1].GetChild<Label3D>(0).Text = cardInstanceInfo.Cost.ToString();
         nodes[2].GetChild<Label3D>(0).Text = cardInstanceInfo.Hp.ToString();
         nodes[3].GetChild<Label3D>(0).Text = cardInstanceInfo.Damage.ToString();
     }
-    
+
     public bool SwitchViewCard(){
         if (is_placed) return false;
         foreach(Node3D n in nodes){
@@ -108,9 +112,9 @@ public partial class CardPlayer : Node3D
 
         if (cc.GetCurrentPlayer().mana >= cardInstanceInfo.Cost){
             imgCard.Modulate = new Color(1, 1, 1, 1);
-            GD.Print("NIIIGAB");
+            // GD.Print("NIIIGAB");
         }else{
-            GD.Print("No nigab ", $"{cc.GetCurrentPlayer().mana}, {cardInstanceInfo.Cost}");
+            // GD.Print("No nigab ", $"{cc.GetCurrentPlayer().mana}, {cardInstanceInfo.Cost}");
             imgCard.Modulate = new Color(0.6f, 0.6f, 0.6f, 1);
         }
 		
