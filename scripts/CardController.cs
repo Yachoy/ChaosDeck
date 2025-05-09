@@ -11,11 +11,11 @@ namespace CCSpace{
 
     public interface ICardBehavior
     {
-        void OnSpawn(CardController cardController, Player player, CCSpace.CardData.Card cardData);
-        void OnDeath(CardController cardController, Player player, CCSpace.CardData.Card cardData);
-        void OnAttacked(CardController cardController, Player player, CCSpace.CardData.Card cardData, int damage);
-        void OnStep(CardController cardController, Player player,CCSpace.CardData.Card cardData);
-        void OnEvent(CardController cardController, Player player, string eventName, object eventData);
+        public void OnSpawn(CardController cardController, CardPlayer me);
+        public void OnDeath(CardController cardController, CardPlayer notMe, CardPlayer me);
+        public void OnAttacked(CardController cardController, CardPlayer notMe, CardPlayer me);
+        public void OnStep(CardController cardController, CardPlayer me);
+        public void OnEvent(CardController cardController, Player notMe, Player me, string eventName, object eventData);
     }
     
 
@@ -37,6 +37,8 @@ namespace CCSpace{
             public Texture2D ImageTexture;
             public ICardBehavior Behavior {get; private set;}
 
+            public bool its_can_figth = false;
+
             public Card(CardData createFrom){
                 CardDataOriginal = createFrom;
                 Hp = createFrom.DefaultHp;
@@ -47,7 +49,7 @@ namespace CCSpace{
             }
         }
         public string DefaultName { get; private set; }
-        public int DefaultHp { get; set; }
+        public int DefaultHp { get; private set; }
         public int DefaultDamage { get; private set; }
         public int DefaultCost { get; private set; }
         public TypesCards CardType { get; private set; }
@@ -321,7 +323,7 @@ namespace HotSpotPlaying{
         public int max_mana = 1;
         public int hp = 40;
 
-        public CardData.Card[] Field = new CardData.Card[6];
+        public CardPlayer[] Field = new CardPlayer[6];
 
         CCSpace.CardSetData.CardSet actualDeck;
 
@@ -357,12 +359,22 @@ namespace HotSpotPlaying{
 }
 
 
-class DemoBegaviour : CCSpace.ICardBehavior{
-        public void OnSpawn(CardController cardController, Player player, CCSpace.CardData.Card cardData){}
-        public void OnDeath(CardController cardController, Player player, CCSpace.CardData.Card cardData) {}
-        public void OnAttacked(CardController cardController, Player player, CCSpace.CardData.Card cardData, int damage){}
-        public void OnStep(CardController cardController, Player player, CCSpace.CardData.Card cardData){}
-        public void OnEvent(CardController cardController, Player player, string eventName, object eventData){}
+class BaseBegaviour : CCSpace.ICardBehavior {
+        public void OnSpawn(CardController cardController, CardPlayer me){
+
+        }
+        public void OnDeath(CardController cardController, CardPlayer notMe, CardPlayer me){
+
+        }
+        public void OnAttacked(CardController cardController, CardPlayer notMe, CardPlayer me){
+            me.cardInstanceInfo.Hp -= notMe.cardInstanceInfo.Damage;
+        }
+        public void OnStep(CardController cardController, CardPlayer me){
+
+        }
+        public void OnEvent(CardController cardController, Player notMe, Player me, string eventName, object eventData){
+
+        }
 }
 
 
@@ -381,13 +393,12 @@ public partial class CardController : Node
     public CardSetData DebugCardSet = new CardSetData();
 
     public CardLoader StorageCards = new CardLoader("res://resources/CardsStorage/", new System.Collections.Generic.Dictionary<string, ICardBehavior>{
-            {"Archer", new DemoBegaviour()},
-            {"Warrior", new DemoBegaviour()},
-            {"Dwarf", new DemoBegaviour()},
-            {"Elf warrior", new DemoBegaviour()},
-            {"Militia", new DemoBegaviour()},
-            {"Elf scout", new DemoBegaviour()}
-
+            {"Archer", new BaseBegaviour()},
+            {"Warrior", new BaseBegaviour()},
+            {"Dwarf", new BaseBegaviour()},
+            {"Elf warrior", new BaseBegaviour()},
+            {"Militia", new BaseBegaviour()},
+            {"Elf scout", new BaseBegaviour()}
     });
 
 	public override void _Ready()
@@ -424,6 +435,20 @@ public partial class CardController : Node
         if (hp1 is null || hp2 is  null){
             return false;
         }
+        GD.Print("Start new match");
+        foreach(CardPlayer cp in hp1.cards.Concat(hp2.cards)){
+            if(cp is not null){
+                cp.QueueFree();
+            }
+        }
+        foreach(CardPlace cp in hp1.places.Concat(hp2.places)){
+            if(cp is not null){
+                cp.QueueFree();
+            }
+            
+        }
+        round_player1 = true;
+
         match = new HotSpotPlaying.Match(
             new HotSpotPlaying.Player(deck1.MakeInstanceForGame()), 
             new HotSpotPlaying.Player(deck2.MakeInstanceForGame())
@@ -432,13 +457,13 @@ public partial class CardController : Node
         hp1.SpawnStartCards();
 		hp2.SpawnStartPlaces();
         hp2.SpawnStartCards();
-        if (!((CardPlayer)hp2.cards[0]).isCardHidden){
+        if (!hp2.cards[0].isCardHidden){
             foreach(CardPlayer n in hp2.cards){
                 if (n is null) continue;
                 n.SwitchViewCard();
             }
         }
-        if (((CardPlayer)hp1.cards[0]).isCardHidden){
+        if (hp1.cards[0].isCardHidden){
             foreach(CardPlayer n in hp1.cards){
                 if (n is null) continue;
                 n.SwitchViewCard();
@@ -464,15 +489,63 @@ public partial class CardController : Node
     }
 
     public void MakeRound(){
-        round_player1 = !round_player1;
         foreach(CardPlayer n in hp1.cards.Concat(hp2.cards)){
             if (n is null) continue;
             n.SwitchViewCard();
         }
-        Player p = GetCurrentPlayer(true);
-        p.max_mana = p.max_mana + 1;
-        p.mana = p.max_mana;
+
+
+
+        Player p_now = GetCurrentPlayer();
+        HandPlayer hand_now = round_player1 ? hp1 : hp2; 
+        Player p_next = GetCurrentPlayer(true);
+        HandPlayer hand_next = !round_player1 ? hp1 : hp2;
+        p_now.max_mana = p_now.max_mana + 1;
+        p_now.mana = p_now.max_mana;
+        int counter = 0;
+        foreach (CardPlayer nowPlayerCard in p_now.Field){
+            CardPlayer nextPlayerCard = p_next.Field[counter];
+            if (nowPlayerCard is not null){
+                if (nowPlayerCard.cardInstanceInfo.its_can_figth){
+                    hand_now.AnimateCardAttack(nowPlayerCard);
+                    if(nextPlayerCard is null){
+                        p_next.hp -= nowPlayerCard.cardInstanceInfo.Damage;
+                        if (p_next.hp <= 0){
+                            hp1.QueueFree();
+                            hp2.QueueFree();
+                            hp1 = null;
+                            hp2 = null;
+                            is_button_endr_set = false;
+                            GetTree().ChangeSceneToFile("res://scenes/Menu/main_menu.tscn");
+                        }
+                    }else{
+                        nextPlayerCard.cardInstanceInfo.Behavior.OnAttacked(this, nowPlayerCard, nextPlayerCard);
+                        if (nextPlayerCard.cardInstanceInfo.Hp <= 0){
+                            nextPlayerCard.cardInstanceInfo.Behavior.OnDeath(this, nowPlayerCard, nextPlayerCard);
+                            nextPlayerCard.Visible = false;
+                            nextPlayerCard.QueueFree();
+                            p_next.Field[counter] = null;
+                        }else{
+                            nextPlayerCard.UpdateStatisticeOnTheCards();
+                        }
+                    }
+                    nowPlayerCard.UpdateStatisticeOnTheCards();
+                    
+                }
+                nowPlayerCard.cardInstanceInfo.its_can_figth = true;
+            }
+            counter++;
+        }
+        round_player1 = !round_player1;
         HandlePlayerStatForLabels();
+        hand_next.UpdateVisibilityCards();
+        hand_now.UpdateVisibilityCards();
+        foreach (CardPlayer nowPlayerCard in p_next.Field){
+            if (nowPlayerCard is not null){
+                nowPlayerCard.cardInstanceInfo.Behavior.OnStep(this, nowPlayerCard);
+            }
+        }
+
     }
     
     public bool ProcessCardPlacement(CardPlayer card, CardPlace place){
@@ -482,8 +555,9 @@ public partial class CardController : Node
             return false;
         }
         player.mana -= card.cardInstanceInfo.Cost;
-        player.Field[place.Index] = card.cardInstanceInfo;
+        player.Field[place.Index] = card;
         HandlePlayerStatForLabels();
+        card.cardInstanceInfo.Behavior.OnSpawn(this, card);
         return true;
     }
 
