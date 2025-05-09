@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://s7sodme2owht" path="res://resources/images/swappy-20250421-181951-removebg-preview.png" id="1_0o2cb"]
 [ext_resource type="PackedScene" uid="uid://cr6gc767d2my3" path="res://scenes/Card/SourceScenes/cube.tscn" id="1_lyxhp"]
-[ext_resource type="Script" path="res://scripts/menus/ParamatersTwoPlayers.cs" id="2_ejxcg"]
+[ext_resource type="Script" path="res://resources/CardsStorage/ParamatersTwoPlayers.cs" id="2_ejxcg"]
 [ext_resource type="Script" path="res://scripts/HandPlayer.cs" id="2_ffhym"]
 [ext_resource type="PackedScene" uid="uid://d2iths7wpfxne" path="res://scenes/Card/card.tscn" id="3_30oii"]
 [ext_resource type="PackedScene" uid="uid://c66keccqrqhpo" path="res://scenes/Card/item_to_place_card.tscn" id="5_j6eu1"]

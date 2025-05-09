@@ -17,6 +17,9 @@ public partial class CardUI : Node2D
 	public Label damage;
 	[Export]
 	public Label hp;
+	[Export]
+	public Control Control;
+	public string description;
 
 	public override void _Ready(){
 		//ChangeTexture("res://resources/CardsStorage/images/dwarf.png");

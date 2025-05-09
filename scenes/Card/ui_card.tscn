@@ -67,3 +67,11 @@ offset_right = 59.0
 offset_bottom = 61.0
 text = "23"
 label_settings = SubResource("LabelSettings_5pwi5")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -57.0
+offset_top = -54.0
+offset_right = 57.0
+offset_bottom = 58.0
