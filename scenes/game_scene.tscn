@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://dbius52b7r1i5"]
+[gd_scene load_steps=10 format=3 uid="uid://dbius52b7r1i5"]
 
 [ext_resource type="Texture2D" uid="uid://s7sodme2owht" path="res://resources/images/swappy-20250421-181951-removebg-preview.png" id="1_0o2cb"]
 [ext_resource type="PackedScene" uid="uid://cr6gc767d2my3" path="res://scenes/Card/SourceScenes/cube.tscn" id="1_lyxhp"]
+[ext_resource type="Script" path="res://scripts/menus/ParamatersTwoPlayers.cs" id="2_ejxcg"]
 [ext_resource type="Script" path="res://scripts/HandPlayer.cs" id="2_ffhym"]
 [ext_resource type="PackedScene" uid="uid://d2iths7wpfxne" path="res://scenes/Card/card.tscn" id="3_30oii"]
 [ext_resource type="PackedScene" uid="uid://c66keccqrqhpo" path="res://scenes/Card/item_to_place_card.tscn" id="5_j6eu1"]
@@ -18,14 +19,14 @@ material = SubResource("StandardMaterial3D_b2xi4")
 
 [node name="RightMenu" type="Panel" parent="."]
 anchors_preset = -1
-anchor_left = 0.824
-anchor_top = 0.199
+anchor_left = 0.848
+anchor_top = 0.321
 anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -0.248047
-offset_top = 0.0480042
+anchor_bottom = 0.676
+offset_left = 0.103943
+offset_top = -0.00801086
 offset_right = -1.0
-offset_bottom = 28.0
+offset_bottom = -0.0480347
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -65,8 +66,104 @@ layout_mode = 2
 texture = ExtResource("1_0o2cb")
 stretch_mode = 3
 
+[node name="Panel" type="Panel" parent="." node_paths=PackedStringArray("player1_hp", "player1_mana", "player1_power_mana", "player2_hp", "player2_mana", "player2_power_mana")]
+anchors_preset = -1
+anchor_right = 0.273
+anchor_bottom = 1.0
+offset_right = -4.496
+offset_bottom = 1.0
+script = ExtResource("2_ejxcg")
+player1_hp = NodePath("VFlowContainer/HBoxContainer/Label2")
+player1_mana = NodePath("VFlowContainer/HBoxContainer2/Label2")
+player1_power_mana = NodePath("VFlowContainer/HBoxContainer5/Label2")
+player2_hp = NodePath("VFlowContainer/HBoxContainer3/Label2")
+player2_mana = NodePath("VFlowContainer/HBoxContainer4/Label2")
+player2_power_mana = NodePath("VFlowContainer/HBoxContainer6/Label2")
+
+[node name="VFlowContainer" type="VFlowContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.006
+anchor_bottom = 1.0
+offset_right = 0.139984
+offset_bottom = -3.0
+
+[node name="Label" type="Label" parent="Panel/VFlowContainer"]
+layout_mode = 2
+text = "Player1"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VFlowContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/VFlowContainer/HBoxContainer"]
+layout_mode = 2
+text = "Hp:"
+
+[node name="Label2" type="Label" parent="Panel/VFlowContainer/HBoxContainer"]
+layout_mode = 2
+text = "123"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/VFlowContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/VFlowContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Mana:"
+
+[node name="Label2" type="Label" parent="Panel/VFlowContainer/HBoxContainer2"]
+layout_mode = 2
+text = "123"
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="Panel/VFlowContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/VFlowContainer/HBoxContainer5"]
+layout_mode = 2
+text = "Power Mana:"
+
+[node name="Label2" type="Label" parent="Panel/VFlowContainer/HBoxContainer5"]
+layout_mode = 2
+text = "123"
+
+[node name="Label2" type="Label" parent="Panel/VFlowContainer"]
+layout_mode = 2
+text = "Player2"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/VFlowContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/VFlowContainer/HBoxContainer3"]
+layout_mode = 2
+text = "Hp:"
+
+[node name="Label2" type="Label" parent="Panel/VFlowContainer/HBoxContainer3"]
+layout_mode = 2
+text = "123"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="Panel/VFlowContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/VFlowContainer/HBoxContainer4"]
+layout_mode = 2
+text = "Mana:"
+
+[node name="Label2" type="Label" parent="Panel/VFlowContainer/HBoxContainer4"]
+layout_mode = 2
+text = "123"
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="Panel/VFlowContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/VFlowContainer/HBoxContainer6"]
+layout_mode = 2
+text = "Power Mana:"
+
+[node name="Label2" type="Label" parent="Panel/VFlowContainer/HBoxContainer6"]
+layout_mode = 2
+text = "123"
+
 [node name="table" parent="." instance=ExtResource("1_lyxhp")]
-transform = Transform3D(4.32, 0, 0, 0, 0.045, 0, 0, 0, 2.37861, 0.781746, 0, -0.441882)
+transform = Transform3D(4.50436, 0, 0, 0, 0.045, 0, 0, 0, 3.28695, 0.861922, 0, 0.0129451)
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 4, 0)
@@ -77,8 +174,8 @@ size = 5.955
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.132948, 0.991123, 0, -0.991123, -0.132948, 0, 1.15899, 0)
 
-[node name="PlaceHand1" type="Node3D" parent="." node_paths=PackedStringArray("_start_pos_cards", "_start_pos_places", "btnEndround")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.781746, 0, -0.0861114)
+[node name="PlaceHand1" type="Node3D" parent="." node_paths=PackedStringArray("_start_pos_cards", "_start_pos_places", "btnEndround", "panelPTP")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.781746, 0, 0.357887)
 script = ExtResource("2_ffhym")
 _cardScene = ExtResource("3_30oii")
 _start_pos_cards = NodePath("Hand")
@@ -87,6 +184,7 @@ _start_pos_places = NodePath("Place")
 _horizontalSpacingCards = 0.535
 _horizontalSpacingPlaces = 0.5
 btnEndround = NodePath("../RightMenu/VBoxContainer/EndRoundBTN")
+panelPTP = NodePath("../Panel")
 
 [node name="Place" type="Node3D" parent="PlaceHand1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7, 0.2, 0)
@@ -104,8 +202,8 @@ shape = SubResource("BoxShape3D_os47l")
 transform = Transform3D(0.738118, 0, 0, 0, 0.100444, 0, 0, 0, 0.413275, 0, 0, 0)
 mesh = SubResource("BoxMesh_6ubc8")
 
-[node name="PlaceHand2" type="Node3D" parent="." node_paths=PackedStringArray("_start_pos_cards", "_start_pos_places", "btnEndround")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.781746, 0, -0.799587)
+[node name="PlaceHand2" type="Node3D" parent="." node_paths=PackedStringArray("_start_pos_cards", "_start_pos_places", "btnEndround", "panelPTP")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.781746, 0, -0.355589)
 script = ExtResource("2_ffhym")
 _cardScene = ExtResource("3_30oii")
 _start_pos_cards = NodePath("Hand")
@@ -115,6 +213,7 @@ IsAnotherTeam = true
 _horizontalSpacingCards = 0.535
 _horizontalSpacingPlaces = 0.5
 btnEndround = NodePath("../RightMenu/VBoxContainer/EndRoundBTN")
+panelPTP = NodePath("../Panel")
 
 [node name="Place" type="Node3D" parent="PlaceHand2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7, 0.2, 0)

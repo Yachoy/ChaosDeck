@@ -1,8 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://d2iths7wpfxne"]
+[gd_scene load_steps=10 format=3 uid="uid://d2iths7wpfxne"]
 
 [ext_resource type="Script" path="res://scripts/CardPlayer.cs" id="1_7x6aj"]
 [ext_resource type="Texture2D" uid="uid://cqc6oekkwqerg" path="res://resources/CardsStorage/images/dwarf.png" id="1_65fa5"]
-[ext_resource type="PackedScene" uid="uid://b17ygl66787hw" path="res://scenes/Card/SourceScenes/Text3D.tscn" id="2_rdrk2"]
 [ext_resource type="Material" uid="uid://c4ul4b8okqcnm" path="res://scenes/Card/SourceScenes/yellow_outline_card.tres" id="3_hfa5m"]
 
 [sub_resource type="Curve" id="Curve_jy1ss"]
@@ -18,13 +17,17 @@ size = Vector3(0.5, 0.001, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_81vdh"]
 size = Vector3(0.523315, 1.09634, 1.05853)
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_52enx"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ohs7d"]
+
 [node name="Card" type="Node3D" node_paths=PackedStringArray("OutlineMesh", "HoverArea", "imgCard", "nodes")]
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
 script = ExtResource("1_7x6aj")
 OutlineMesh = NodePath("Node3D/outline/MeshInstance3D2")
 HoverArea = NodePath("Node3D/Area3D")
 imgCard = NodePath("Node3D/TargetImageCard")
-nodes = [NodePath("TypeT"), NodePath("ManaT"), NodePath("CostT"), NodePath("DamageT")]
+nodes = [NodePath("TypeT"), NodePath("CostT"), NodePath("HpT"), NodePath("DamageT")]
 MoveEaseCurve = SubResource("Curve_jy1ss")
 
 [node name="Node3D" type="Node3D" parent="."]
@@ -51,14 +54,82 @@ shape = SubResource("BoxShape3D_81vdh")
 transform = Transform3D(0.155, 0, 0, 0, -1.20206e-08, 1, 0, -0.275, -4.37114e-08, 0, 0.036, 0)
 texture = ExtResource("1_65fa5")
 
-[node name="TypeT" parent="." instance=ExtResource("2_rdrk2")]
-transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, -0.23, 0.05, -0.23)
+[node name="HpT" type="Node3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, 0.23, 0.07, -0.23)
 
-[node name="ManaT" parent="." instance=ExtResource("2_rdrk2")]
-transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, 0.23, 0.05, -0.23)
+[node name="Label3D" type="Label3D" parent="HpT"]
+transform = Transform3D(0.5, 0, 0, 0, -2.18557e-08, 0.5, 0, -0.5, -2.18557e-08, 0, 0, 0)
+modulate = Color(0, 0, 0, 1)
+outline_modulate = Color(0.44701, 0.846222, 0.25059, 1)
+text = "23"
+font_size = 48
+outline_size = 88
 
-[node name="CostT" parent="." instance=ExtResource("2_rdrk2")]
-transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, -0.23, 0.05, 0.23)
+[node name="StaticBody3D" type="StaticBody3D" parent="HpT"]
+transform = Transform3D(0.2, 0, 0, 0, 0.005, 0, 0, 0, 0.2, 0, -0.0103154, 0)
 
-[node name="DamageT" parent="." instance=ExtResource("2_rdrk2")]
-transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, 0.23, 0.05, 0.23)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HpT/StaticBody3D"]
+shape = SubResource("CylinderShape3D_52enx")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="HpT/StaticBody3D"]
+mesh = SubResource("CylinderMesh_ohs7d")
+
+[node name="DamageT" type="Node3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, 0.23, 0.07, 0.23)
+
+[node name="Label3D" type="Label3D" parent="DamageT"]
+transform = Transform3D(0.5, 0, 0, 0, -2.18557e-08, 0.5, 0, -0.5, -2.18557e-08, 0, 0, 0)
+modulate = Color(0, 0, 0, 1)
+outline_modulate = Color(0.914108, 0.306763, 0.326928, 1)
+text = "23"
+font_size = 48
+outline_size = 88
+
+[node name="StaticBody3D" type="StaticBody3D" parent="DamageT"]
+transform = Transform3D(0.2, 0, 0, 0, 0.005, 0, 0, 0, 0.2, 0, -0.0103154, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DamageT/StaticBody3D"]
+shape = SubResource("CylinderShape3D_52enx")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="DamageT/StaticBody3D"]
+mesh = SubResource("CylinderMesh_ohs7d")
+
+[node name="CostT" type="Node3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, -0.23, 0.07, 0.23)
+
+[node name="Label3D" type="Label3D" parent="CostT"]
+transform = Transform3D(0.5, 0, 0, 0, -2.18557e-08, 0.5, 0, -0.5, -2.18557e-08, 0, 0, 0)
+modulate = Color(0, 0, 0, 1)
+outline_modulate = Color(0.642562, 0.638217, 0.638217, 1)
+text = "23"
+font_size = 48
+outline_size = 88
+
+[node name="StaticBody3D" type="StaticBody3D" parent="CostT"]
+transform = Transform3D(0.2, 0, 0, 0, 0.005, 0, 0, 0, 0.2, 0, -0.0103154, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CostT/StaticBody3D"]
+shape = SubResource("CylinderShape3D_52enx")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CostT/StaticBody3D"]
+mesh = SubResource("CylinderMesh_ohs7d")
+
+[node name="TypeT" type="Node3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, -0.23, 0.07, -0.23)
+
+[node name="Label3D" type="Label3D" parent="TypeT"]
+transform = Transform3D(0.5, 0, 0, 0, -2.18557e-08, 0.5, 0, -0.5, -2.18557e-08, 0, 0, 0)
+modulate = Color(0, 0, 0, 1)
+outline_modulate = Color(1, 1, 1, 1)
+text = "23"
+font_size = 48
+outline_size = 88
+
+[node name="StaticBody3D" type="StaticBody3D" parent="TypeT"]
+transform = Transform3D(0.2, 0, 0, 0, 0.005, 0, 0, 0, 0.2, 0, -0.0103154, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TypeT/StaticBody3D"]
+shape = SubResource("CylinderShape3D_52enx")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TypeT/StaticBody3D"]
+mesh = SubResource("CylinderMesh_ohs7d")

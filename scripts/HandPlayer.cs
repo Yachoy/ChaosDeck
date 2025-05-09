@@ -1,3 +1,4 @@
+using CCSpace;
 using Godot;
 using System;
 using System.Collections.Generic; 
@@ -26,10 +27,12 @@ public partial class HandPlayer : Node3D
 
     [Export]
     public Button btnEndround;
+	[Export]
+    public Panel panelPTP;
 
 	// Массив для карт в руке фиксированного размера
 	private const int MAX_CARDS_IN_HAND = 8;
-	public Node3D[] cards = new Node3D[MAX_CARDS_IN_HAND];
+	public CardPlayer[] cards = new CardPlayer[MAX_CARDS_IN_HAND];
 
 	// Массив для мест на поле
 	private const int MAX_PLACES = 6;
@@ -58,9 +61,6 @@ public partial class HandPlayer : Node3D
 			GD.PrintErr("CardController не загружен...");
 		}
 
-		SpawnStartCards();
-		SpawnStartPlaces();
-
 		if (cc != null)
 		{
 			if (IsAnotherTeam)
@@ -72,12 +72,13 @@ public partial class HandPlayer : Node3D
 				cc.RegisterHandPlayer1(this);
 			}
             cc.RegisterButtonEndRound(btnEndround);
-            //TODO: Need to replace call to start match
-			cc.StartNewMatch();
+			cc.RegisterMenuParameters((ParamatersTwoPlayers)panelPTP);
 		}
+		//TODO: Need to replace call to start match
+		cc.StartNewMatch(cc.DebugCardSet, cc.DebugCardSet);
 	}
 
-	private void SpawnStartPlaces(int _numberOfPlaces = MAX_PLACES)
+	public void SpawnStartPlaces(int _numberOfPlaces = MAX_PLACES)
 	{
 		if (_numberOfPlaces > MAX_PLACES)
 		{
@@ -87,7 +88,7 @@ public partial class HandPlayer : Node3D
 
 		for (int i = 0; i < _numberOfPlaces; i++)
 		{
-			GD.Print($"Spawn place {i}");
+			//GD.Print($"Spawn place {i}");
 			Node3D placeInstance = _placeCardScene.Instantiate<Node3D>();
 			Vector3 currentPosition = _start_pos_places.Position;
 			currentPosition.X += i * _horizontalSpacingPlaces;
@@ -100,6 +101,7 @@ public partial class HandPlayer : Node3D
 				{
 					cardPlace.SetIsAnotherTeam();
 				}
+				cardPlace.SetIndexed(i);
 				cardPlace.Connect(
 					CardPlayer.SignalName.ObjectSelected, // Возможно, здесь должен быть сигнал от CardPlace?
 					new Callable(this, MethodName.OnCardTryPut)
@@ -113,7 +115,7 @@ public partial class HandPlayer : Node3D
 		}
 	}
 
-	private void SpawnStartCards(int _numberOfCards = MAX_CARDS_IN_HAND)
+	public void SpawnStartCards(int _numberOfCards = MAX_CARDS_IN_HAND)
 	{
 		if (_numberOfCards > MAX_CARDS_IN_HAND)
 		{
@@ -123,7 +125,7 @@ public partial class HandPlayer : Node3D
 
 		for (int i = 0; i < _numberOfCards; i++)
 		{
-			GD.Print($"Spawn card {i}");
+			//GD.Print($"Spawn card {i}");
 			Node3D cardInstance = _cardScene.Instantiate<Node3D>();
 			// Начальная позиция будет определена функцией балансировки
 			AddChild(cardInstance);
@@ -134,11 +136,12 @@ public partial class HandPlayer : Node3D
 				{
 					cardPlayer.SetIsAnotherTeam();
 				}
+				cardPlayer.GenerateCard();
 				cardPlayer.Connect(
 					CardPlayer.SignalName.ObjectSelected,
 					new Callable(this, MethodName.OnCardSelected)
 				);
-				cards[i] = cardInstance;
+				cards[i] = (CardPlayer)cardInstance;
 			}
 			else
 			{
@@ -169,7 +172,8 @@ public partial class HandPlayer : Node3D
 			GD.Print("Place already occupied.");
 			return;
 		}
-
+		if(!cc.ProcessCardPlacement(_selected_card, selectedPlaceCard)){return;}
+		
 		GD.Print($"Trying to place card {_selected_card.Name} on place {selectedPlaceCard.Name}");
 
 		// Удаляем карту из руки
@@ -179,9 +183,7 @@ public partial class HandPlayer : Node3D
 		_selected_card.MoveTo(selectedPlaceCard);
 		selectedPlaceCard.isAlreadyCardHerePumPumPum = true;
 
-        cc.ProcessCardPlacement(_selected_card, selectedPlaceCard);
-
-		_selected_card = null;
+        _selected_card = null;
 	}
 
 	// Удаляет карту из массива руки и запускает перебалансировку
@@ -231,12 +233,13 @@ public partial class HandPlayer : Node3D
 	{
 		GD.Print("Balancing cards in hand...");
 		// Создаем временный список только из не-null элементов
-		var activeCards = new List<Node3D>();
+		var activeCards = new List<CardPlayer>();
 		foreach (var card in cards)
 		{
 			if (card != null)
 			{
 				activeCards.Add(card);
+				card.AdjustSpriteToTargetObject();
 			}
 		}
 
