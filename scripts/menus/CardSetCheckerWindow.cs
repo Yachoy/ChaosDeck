@@ -54,6 +54,7 @@ public partial class CardSetCheckerWindow : Window
 
     void Enter(long index)
     {
+        GD.Print("Choice deck", list.GetItemText((int)index));
     }
 
     public void Exit()
