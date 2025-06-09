@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 CardController="*res://scripts/CardController.cs"
 SqliteContoller="*res://scripts/SqliteContoller.cs"
+UiController="*res://scripts/UIController.cs"
 
 [dotnet]
 

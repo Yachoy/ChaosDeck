@@ -39,9 +39,10 @@ public partial class main_menu : Node
         exit.Pressed += Exit_Pressed;
         Read();
         Theme themeManager = Themes.CreateMenuButtonTheme();
-        var uiRoot = GetNode<Control>("all_menu_BoxContainer");
+        var uiRoot = GetNode<HSplitContainer>(new NodePath("HSplitContainer"));
         if (uiRoot != null)
         {
+            GD.Print("AAAAAAAAAAAAAAAA");
             uiRoot.Theme = themeManager;
         }
     }

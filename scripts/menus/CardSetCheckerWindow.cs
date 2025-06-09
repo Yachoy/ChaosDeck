@@ -44,8 +44,8 @@ public partial class CardSetCheckerWindow : Window
 
         CloseRequested += Exit;
 
-        list.ItemSelected += Selected;
-        list.ItemActivated += Enter;
+//        list.ItemSelected += Selected;
+//        list.ItemActivated += Enter;
     }
 
     void Selected(long index) {

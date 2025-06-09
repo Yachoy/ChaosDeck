@@ -6,31 +6,25 @@ using ThemeManager;
 
 public partial class story_menu : Node
 {
+	[Export]
 	Button newGameB;
-	Button loadGameB;
+	[Export]
 	Button continueGameB;
+	[Export]
 	Button back2menuB;
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
+	public override void _Ready() 
 	{
-		newGameB = GetNode<Button>(new NodePath("MainContainer/VFlowContainer2/new_game_button"));
-		newGameB.Pressed += NewGame;
-        
-        continueGameB = GetNode<Button>(new NodePath("MainContainer/VFlowContainer2/continue_button"));
+        newGameB.Pressed += NewGame;
         continueGameB.Pressed += ContinGame;
-        back2menuB = GetNode<Button>(new NodePath("MainContainer/VFlowContainer2/HBoxContainer/back2menu_button"));
         back2menuB.Pressed += B2M;
         Theme themeManager = Themes.CreateMenuButtonTheme();
-        var uiRoot = GetNode<HBoxContainer>(new NodePath("MainContainer"));
-        GD.Print("AAAAAAAAAAAAAAAAAAa");
+		var uiRoot = GetNode<HBoxContainer>(new NodePath("MainContainer"));
         if (uiRoot != null)
-        {
-			GD.Print("AAAAAAAAAAAAAAAAAAa");
-            uiRoot.Theme = themeManager;
-        }
-    }
+		{
+			uiRoot.Theme = themeManager;
+		}
+	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
 	}
