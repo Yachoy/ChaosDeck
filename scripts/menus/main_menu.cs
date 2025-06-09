@@ -11,13 +11,19 @@ using System.ComponentModel;
 using ThemeManager;
 
 public partial class main_menu : Node
-{
+{   
+    [Export]
     Button story;
+    [Export]
     Button duel;
+    [Export]
     Button collection;
+    [Export]
     Button sett;
+    [Export]
 	Button exit;
     public static bool fullscr;
+    [Export]
     Window cardSetChoose;
     
     // Called when the node enters the scene tree for the first time.
@@ -25,17 +31,11 @@ public partial class main_menu : Node
     public override void _Ready()
 	{
         GD.Print("Работаю");
-        cardSetChoose = GetNode<Window>(new NodePath("CardSetChecker_Window"));
-        cardSetChoose.Visible = false;
-        story = GetNode<Button>(new NodePath("all_menu_BoxContainer/menu_BoxContainer/story_mod_button"));
+        cardSetChoose.Hide();
         story.Pressed += _PressedStory;
-        duel = GetNode<Button>(new NodePath("all_menu_BoxContainer/menu_BoxContainer/duel_mod_button"));
         duel.Pressed += _PressedDuel;
-        collection = GetNode<Button>(new NodePath("all_menu_BoxContainer/menu_BoxContainer/card_collection_button"));
         collection.Pressed += _PressedCollection;
-        sett = GetNode<Button>(new NodePath("all_menu_BoxContainer/menu_BoxContainer/settings_button"));
         sett.Pressed += _PressedSettings;
-        exit = GetNode<Button>(new NodePath("all_menu_BoxContainer/menu_BoxContainer/exit_button"));
         exit.Pressed += Exit_Pressed;
         Read();
         Theme themeManager = Themes.CreateMenuButtonTheme();
@@ -67,30 +67,18 @@ public partial class main_menu : Node
 
         return result;
     }
-    public static Dictionary LoadCardSet(string fullPath) 
-    {
-        using var file = Godot.FileAccess.Open(fullPath, Godot.FileAccess.ModeFlags.Read);
-        string jsonString = file.GetAsText();
-        Variant parsedResult = Json.ParseString(jsonString);
-        Dictionary result = parsedResult.As<Dictionary>();
-        
-        return result;
-    }
 
-    private void _PressedCollection()
-    {
-        cardSetChoose.Visible = true;
-    }
+    private void _PressedCollection() => cardSetChoose.Show();
+
 
     private void _PressedStory()
     {
-
         GetTree().ChangeSceneToFile("res://scenes/Menu/story_menu.tscn");
     }
 
     private void _PressedDuel()
     {
-        GD.Print("Ля, ну жуй!");
+        cardSetChoose.Show();
     }
 
     private void _PressedSettings()
