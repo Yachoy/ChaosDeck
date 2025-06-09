@@ -6,71 +6,10 @@
 
 [sub_resource type="Theme" id="Theme_oxdrp"]
 
-[node name="settings" type="Node3D"]
+[node name="settings" type="Node3D" node_paths=PackedStringArray("back", "fullScreen")]
 script = ExtResource("1_b8wbx")
-
-[node name="MainContainer" type="HBoxContainer" parent="."]
-clip_contents = true
-offset_left = 5.0
-offset_right = 1155.0
-offset_bottom = 647.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/separation = 40
-
-[node name="VFlowContainer" type="VBoxContainer" parent="MainContainer"]
-custom_minimum_size = Vector2(500, 0)
-layout_mode = 2
-
-[node name="sound" type="Label" parent="MainContainer/VFlowContainer"]
-layout_mode = 2
-text = "Звук"
-
-[node name="all_sound_label" type="Label" parent="MainContainer/VFlowContainer"]
-layout_mode = 2
-theme = SubResource("Theme_oxdrp")
-text = "Общая громкость"
-
-[node name="all_sound_HSlider" type="HSlider" parent="MainContainer/VFlowContainer"]
-layout_mode = 2
-
-[node name="music_sound_label" type="Label" parent="MainContainer/VFlowContainer"]
-layout_mode = 2
-theme = SubResource("Theme_oxdrp")
-text = "Громкость музыки"
-
-[node name="music_sound_HSlider" type="HSlider" parent="MainContainer/VFlowContainer"]
-layout_mode = 2
-
-[node name="another_sound_label" type="Label" parent="MainContainer/VFlowContainer"]
-layout_mode = 2
-theme = SubResource("Theme_oxdrp")
-text = "Громкость звуков
-"
-
-[node name="another_sound_HSlider" type="HSlider" parent="MainContainer/VFlowContainer"]
-layout_mode = 2
-
-[node name="graphics_Label" type="Label" parent="MainContainer/VFlowContainer"]
-layout_mode = 2
-text = "Графика"
-
-[node name="FullScrean_CheckBox" type="CheckBox" parent="MainContainer/VFlowContainer"]
-layout_mode = 2
-text = "Полноэкранный режим"
-
-[node name="VSeparator" type="VSeparator" parent="MainContainer"]
-custom_minimum_size = Vector2(70, 0)
-layout_mode = 2
-
-[node name="VFlowContainer2" type="VBoxContainer" parent="MainContainer"]
-custom_minimum_size = Vector2(500, 0)
-layout_mode = 2
-size_flags_vertical = 8
-
-[node name="back2menu_button" type="Button" parent="MainContainer/VFlowContainer2"]
-layout_mode = 2
-text = "Вернуться в меню"
+back = NodePath("MarginContainer/HSplitContainer/VFlowContainer2/back2menu_button")
+fullScreen = NodePath("MarginContainer/HSplitContainer/MainContainer/VFlowContainer/FullScrean_CheckBox")
 
 [node name="BookBackgroundCube" type="MeshInstance3D" parent="."]
 transform = Transform3D(-8.63227e-08, 0, 0.367893, 0, 1.0063, 0, -1.97483, 0, -1.60811e-08, 0.145394, 0.72644, -0.0257937)
@@ -89,3 +28,76 @@ size = 3.37371
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 3, 0)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.995
+offset_right = -3.0
+offset_bottom = 0.239929
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="MainContainer" type="HBoxContainer" parent="MarginContainer/HSplitContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 40
+
+[node name="VFlowContainer" type="VBoxContainer" parent="MarginContainer/HSplitContainer/MainContainer"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+
+[node name="sound" type="Label" parent="MarginContainer/HSplitContainer/MainContainer/VFlowContainer"]
+layout_mode = 2
+text = "Звук"
+
+[node name="all_sound_label" type="Label" parent="MarginContainer/HSplitContainer/MainContainer/VFlowContainer"]
+layout_mode = 2
+theme = SubResource("Theme_oxdrp")
+text = "Общая громкость"
+
+[node name="all_sound_HSlider" type="HSlider" parent="MarginContainer/HSplitContainer/MainContainer/VFlowContainer"]
+layout_mode = 2
+
+[node name="music_sound_label" type="Label" parent="MarginContainer/HSplitContainer/MainContainer/VFlowContainer"]
+layout_mode = 2
+theme = SubResource("Theme_oxdrp")
+text = "Громкость музыки"
+
+[node name="music_sound_HSlider" type="HSlider" parent="MarginContainer/HSplitContainer/MainContainer/VFlowContainer"]
+layout_mode = 2
+
+[node name="another_sound_label" type="Label" parent="MarginContainer/HSplitContainer/MainContainer/VFlowContainer"]
+layout_mode = 2
+theme = SubResource("Theme_oxdrp")
+text = "Громкость звуков
+"
+
+[node name="another_sound_HSlider" type="HSlider" parent="MarginContainer/HSplitContainer/MainContainer/VFlowContainer"]
+layout_mode = 2
+
+[node name="graphics_Label" type="Label" parent="MarginContainer/HSplitContainer/MainContainer/VFlowContainer"]
+layout_mode = 2
+text = "Графика"
+
+[node name="FullScrean_CheckBox" type="CheckBox" parent="MarginContainer/HSplitContainer/MainContainer/VFlowContainer"]
+layout_mode = 2
+text = "Полноэкранный режим"
+
+[node name="VFlowContainer2" type="VBoxContainer" parent="MarginContainer/HSplitContainer"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="back2menu_button" type="Button" parent="MarginContainer/HSplitContainer/VFlowContainer2"]
+layout_mode = 2
+text = "Вернуться в меню"

@@ -4,8 +4,11 @@
 [ext_resource type="ArrayMesh" uid="uid://b6edmhw2rsy04" path="res://scenes/Models/meshes/book_background_Cube.res" id="2_uv1h6"]
 [ext_resource type="ArrayMesh" uid="uid://dt1trmvfctava" path="res://scenes/Models/meshes/book_background_Куб_002.res" id="3_be1lq"]
 
-[node name="Node2D" type="Node3D"]
+[node name="Node2D" type="Node3D" node_paths=PackedStringArray("newGameB", "continueGameB", "back2menuB")]
 script = ExtResource("1_nr8s1")
+newGameB = NodePath("MainContainer/VFlowContainer2/new_game_button")
+continueGameB = NodePath("MainContainer/VFlowContainer2/continue_button")
+back2menuB = NodePath("MainContainer/VFlowContainer2/HBoxContainer/back2menu_button")
 
 [node name="MainContainer" type="HBoxContainer" parent="."]
 offset_right = 1150.0
