@@ -38,7 +38,6 @@ public partial class story_menu : Node
 		GetTree().ChangeSceneToFile("res://scenes/game_scene.tscn");
 	}
 	public void ContinGame() {
-		//Загрузить последний файл сохранения и выгрузить в тмп
 		GetTree().ChangeSceneToFile("res://scenes/game_scene.tscn");
 	}
 	public void B2M() {		
@@ -46,7 +45,6 @@ public partial class story_menu : Node
 	}
     public void LoadGame()
 	{
-        //Загрузить выбранный файл сохранения и выгрузить в тмп
         CreateWriteTmp();
         GetTree().ChangeSceneToFile("res://scenes/game_scene.tscn");
     }

@@ -392,6 +392,7 @@ public partial class CardController : Node
     private bool round_player1 = true;
 
     public CardSetData DebugCardSet = new CardSetData();
+    private CardSetData defaultDeck = null;
 
     public CardLoader StorageCards = new CardLoader("res://resources/CardsStorage/", new System.Collections.Generic.Dictionary<string, ICardBehavior>{
             {"Archer", new BaseBegaviour()},
@@ -403,17 +404,21 @@ public partial class CardController : Node
     });
 
 	public override void _Ready()
-	{
+    {
         int c = 0;
-        foreach(CardData v in StorageCards.LoadedCards){
-            if(!DebugCardSet.TryAdd(v)){
+        foreach (CardData v in StorageCards.LoadedCards)
+        {
+            if (!DebugCardSet.TryAdd(v))
+            {
                 GD.Print("Can't add...");
             }
             c += 1;
-            if (c >= 10){ break; }
+            if (c >= 10) { break; }
         }
         GD.Print(DebugCardSet.CountCards);
-	}
+    }
+
+    public void SetDefaultDeck(CardSetData csd) => defaultDeck = csd;
 
     public Player GetCurrentPlayer(bool reverse = false) => (reverse ? !round_player1 : round_player1) ? match.p1 : match.p2;
 
@@ -422,54 +427,109 @@ public partial class CardController : Node
         GD.Print("Player ", is_player2 ? "1" : "2");
         return p.GetCardFromDeck();
     }
+
+    public CardSetData GenerateRandomDeck()
+    {
+
+        CardSetData csd_rnd = new CardSetData();
+
+        List<CardData> tempCards = new List<CardData>(StorageCards.LoadedCards);
+        RandomNumberGenerator rng = new RandomNumberGenerator();
+        rng.Randomize(); // Инициализация генератора случайных чисел на основе времени
+
+        int n = tempCards.Count;
+        while (n > 1)
+        {
+            n--;
+            int k = (int)rng.RandiRange(0, n);
+            CardData value = tempCards[k];
+            tempCards[k] = tempCards[n];
+            tempCards[n] = value;
+        }
+
+        int c = 0;
+        foreach (CardData v in tempCards)
+        {
+            if (!csd_rnd.TryAdd(v))
+            {
+                GD.Print("Can't add...");
+            }
+            c += 1;
+            if (c >= 10) { break; }
+        }
+        return csd_rnd;
+
+    }
     
-    public bool StartNewMatch(CardSetData deck1, CardSetData deck2){
-        if (deck1.CountTypesCards < 2){
+    public bool StartNewMatch(CardSetData deck1 = null, CardSetData deck2 = null)
+    {
+        if (deck1 is null || deck2 is null)
+        {
+            deck1 = defaultDeck;
+            deck2 = GenerateRandomDeck();
+        }
+        if (deck1 is null || deck2 is null)
+        {
+            GD.Print("Default deck doesn't take");
+            return false;
+        }
+        if (deck1.CountTypesCards < 2)
+        {
             GD.PushWarning("Count cards in deck1 less then 10, return false");
             return false;
         }
-        if (deck2.CountTypesCards < 2){
+        if (deck2.CountTypesCards < 2)
+        {
             GD.PushWarning("Count cards in deck2 less then 10, return false");
             return false;
         }
 
-        if (hp1 is null || hp2 is  null){
+        if (hp1 is null || hp2 is null)
+        {
             return false;
         }
         GD.Print("Start new match");
-        foreach(CardPlayer cp in hp1.cards.Concat(hp2.cards)){
-            if(cp is not null){
+        foreach (CardPlayer cp in hp1.cards.Concat(hp2.cards))
+        {
+            if (cp is not null)
+            {
                 cp.QueueFree();
             }
         }
-        foreach(CardPlace cp in hp1.places.Concat(hp2.places)){
-            if(cp is not null){
+        foreach (CardPlace cp in hp1.places.Concat(hp2.places))
+        {
+            if (cp is not null)
+            {
                 cp.QueueFree();
             }
-            
+
         }
         round_player1 = true;
 
         match = new HotSpotPlaying.Match(
-            new HotSpotPlaying.Player(deck1.MakeInstanceForGame()), 
+            new HotSpotPlaying.Player(deck1.MakeInstanceForGame()),
             new HotSpotPlaying.Player(deck2.MakeInstanceForGame())
         );
         hp1.SpawnStartPlaces();
         hp1.SpawnStartCards();
-		hp2.SpawnStartPlaces();
+        hp2.SpawnStartPlaces();
         hp2.SpawnStartCards();
-        if (!hp2.cards[0].isCardHidden){
-            foreach(CardPlayer n in hp2.cards){
+        if (!hp2.cards[0].isCardHidden)
+        {
+            foreach (CardPlayer n in hp2.cards)
+            {
                 if (n is null) continue;
                 n.SwitchViewCard();
             }
         }
-        if (hp1.cards[0].isCardHidden){
-            foreach(CardPlayer n in hp1.cards){
+        if (hp1.cards[0].isCardHidden)
+        {
+            foreach (CardPlayer n in hp1.cards)
+            {
                 if (n is null) continue;
                 n.SwitchViewCard();
             }
-        } 
+        }
         HandlePlayerStatForLabels();
         return true;
     }
