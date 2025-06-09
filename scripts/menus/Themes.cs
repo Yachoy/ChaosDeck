@@ -30,21 +30,24 @@ namespace ThemeManager
             normalButtonStyle.CornerRadiusTopRight = 5;
             normalButtonStyle.CornerRadiusBottomLeft = 5;
             normalButtonStyle.CornerRadiusBottomRight = 5;
-            normalButtonStyle.ContentMarginLeft = 10; // Отступ слева для текста/иконки
+            normalButtonStyle.ContentMarginLeft = 10; // РћС‚СЃС‚СѓРї СЃР»РµРІР° РґР»СЏ С‚РµРєСЃС‚Р°/РёРєРѕРЅРєРё
             normalButtonStyle.ContentMarginRight = 10;
             normalButtonStyle.ContentMarginTop = 5;
             normalButtonStyle.ContentMarginBottom = 5;
             theme.SetStylebox("normal", "Button", normalButtonStyle);
 
-            // Стиль для кнопки при наведении
+            // РЎС‚РёР»СЊ РґР»СЏ РєРЅРѕРїРєРё РїСЂРё РЅР°РІРµРґРµРЅРёРё
             var hoverButtonStyle = new StyleBoxFlat();
             hoverButtonStyle.BgColor = new Color((238 / 255), (209 / 255), (141 / 255), 0.4f);
-            hoverButtonStyle.SetCornerRadiusAll(5); // Установить все углы сразу
+            hoverButtonStyle.SetCornerRadiusAll(5); // РЈСЃС‚Р°РЅРѕРІРёС‚СЊ РІСЃРµ СѓРіР»С‹ СЃСЂР°Р·Сѓ
             hoverButtonStyle.ContentMarginLeft = 10;
             hoverButtonStyle.ContentMarginRight = 10;
             hoverButtonStyle.ContentMarginTop = 5;
             hoverButtonStyle.ContentMarginBottom = 5;
             theme.SetStylebox("hover", "Button", hoverButtonStyle);
+
+            var labelStyle = new StyleBoxFlat();
+            //theme.SetStylebox("");
 
             return theme;
         }
