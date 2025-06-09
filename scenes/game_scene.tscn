@@ -1,21 +1,32 @@
-[gd_scene load_steps=10 format=3 uid="uid://dbius52b7r1i5"]
+[gd_scene load_steps=15 format=3 uid="uid://dbius52b7r1i5"]
 
 [ext_resource type="Texture2D" uid="uid://s7sodme2owht" path="res://resources/images/swappy-20250421-181951-removebg-preview.png" id="1_0o2cb"]
 [ext_resource type="PackedScene" uid="uid://cr6gc767d2my3" path="res://scenes/Card/SourceScenes/cube.tscn" id="1_lyxhp"]
 [ext_resource type="Script" path="res://resources/CardsStorage/ParamatersTwoPlayers.cs" id="2_ejxcg"]
 [ext_resource type="Script" path="res://scripts/HandPlayer.cs" id="2_ffhym"]
 [ext_resource type="PackedScene" uid="uid://d2iths7wpfxne" path="res://scenes/Card/card.tscn" id="3_30oii"]
+[ext_resource type="Texture2D" uid="uid://djii6v7sl8ipd" path="res://resources/CardsStorage/images/SuAcho.png" id="3_bryfu"]
+[ext_resource type="Texture2D" uid="uid://jt65jgkv0vlm" path="res://resources/CardsStorage/images/player.jpg" id="4_46mmn"]
 [ext_resource type="PackedScene" uid="uid://c66keccqrqhpo" path="res://scenes/Card/item_to_place_card.tscn" id="5_j6eu1"]
+[ext_resource type="Texture2D" uid="uid://bb0o6ebo7v1jg" path="res://resources/CardsStorage/images/table.png" id="6_0kmdk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bmloh"]
+albedo_texture = ExtResource("6_0kmdk")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_vxmh1"]
+material = SubResource("StandardMaterial3D_bmloh")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_os47l"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b2xi4"]
-albedo_color = Color(0.663278, 0.479874, 0.273226, 1)
+transparency = 1
+albedo_color = Color(0, 0, 0, 0.423529)
 
 [sub_resource type="BoxMesh" id="BoxMesh_6ubc8"]
 material = SubResource("StandardMaterial3D_b2xi4")
 
 [node name="GameScene" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0440372, 0)
 
 [node name="RightMenu" type="Panel" parent="."]
 anchors_preset = -1
@@ -35,9 +46,10 @@ layout_mode = 2
 anchor_top = -0.013
 anchor_right = 0.987
 anchor_bottom = 1.0
-offset_left = 2.0
-offset_top = -0.101
-offset_right = -37.374
+offset_left = 7.0
+offset_top = -0.0100002
+offset_right = -36.7381
+offset_bottom = 3.05176e-05
 scale = Vector2(1.23172, 1)
 alignment = 1
 
@@ -73,97 +85,123 @@ anchor_bottom = 1.0
 offset_right = -4.496
 offset_bottom = 1.0
 script = ExtResource("2_ejxcg")
-player1_hp = NodePath("VFlowContainer/HBoxContainer/Label2")
-player1_mana = NodePath("VFlowContainer/HBoxContainer2/Label2")
-player1_power_mana = NodePath("VFlowContainer/HBoxContainer5/Label2")
-player2_hp = NodePath("VFlowContainer/HBoxContainer3/Label2")
-player2_mana = NodePath("VFlowContainer/HBoxContainer4/Label2")
-player2_power_mana = NodePath("VFlowContainer/HBoxContainer6/Label2")
+player1_hp = NodePath("VFlowContainer/Player1VBoxContainer/HBoxContainer/Label2")
+player1_mana = NodePath("VFlowContainer/Player1VBoxContainer/HBoxContainer2/Label2")
+player1_power_mana = NodePath("VFlowContainer/Player1VBoxContainer/HBoxContainer5/Label2")
+player2_hp = NodePath("VFlowContainer/Player2VBoxContainer/HBoxContainer3/Label2")
+player2_mana = NodePath("VFlowContainer/Player2VBoxContainer/HBoxContainer4/Label2")
+player2_power_mana = NodePath("VFlowContainer/Player2VBoxContainer/HBoxContainer6/Label2")
 
-[node name="VFlowContainer" type="VFlowContainer" parent="Panel"]
+[node name="VFlowContainer" type="VBoxContainer" parent="Panel"]
 layout_mode = 1
 anchors_preset = -1
-anchor_right = 1.006
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 0.139984
+offset_left = 22.0
+offset_top = 19.0
 offset_bottom = -3.0
+theme_override_constants/separation = 64
 
-[node name="Label" type="Label" parent="Panel/VFlowContainer"]
+[node name="Player2VBoxContainer" type="VBoxContainer" parent="Panel/VFlowContainer"]
 layout_mode = 2
-text = "Player1"
+size_flags_horizontal = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VFlowContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Panel/VFlowContainer/HBoxContainer"]
-layout_mode = 2
-text = "Hp:"
-
-[node name="Label2" type="Label" parent="Panel/VFlowContainer/HBoxContainer"]
-layout_mode = 2
-text = "123"
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/VFlowContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Panel/VFlowContainer/HBoxContainer2"]
-layout_mode = 2
-text = "Mana:"
-
-[node name="Label2" type="Label" parent="Panel/VFlowContainer/HBoxContainer2"]
-layout_mode = 2
-text = "123"
-
-[node name="HBoxContainer5" type="HBoxContainer" parent="Panel/VFlowContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Panel/VFlowContainer/HBoxContainer5"]
-layout_mode = 2
-text = "Power Mana:"
-
-[node name="Label2" type="Label" parent="Panel/VFlowContainer/HBoxContainer5"]
-layout_mode = 2
-text = "123"
-
-[node name="Label2" type="Label" parent="Panel/VFlowContainer"]
+[node name="Label2" type="Label" parent="Panel/VFlowContainer/Player2VBoxContainer"]
 layout_mode = 2
 text = "Player2"
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/VFlowContainer"]
+[node name="TextureRect" type="TextureRect" parent="Panel/VFlowContainer/Player2VBoxContainer"]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+texture = ExtResource("3_bryfu")
+expand_mode = 1
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/VFlowContainer/Player2VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/VFlowContainer/HBoxContainer3"]
+[node name="Label" type="Label" parent="Panel/VFlowContainer/Player2VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 text = "Hp:"
 
-[node name="Label2" type="Label" parent="Panel/VFlowContainer/HBoxContainer3"]
+[node name="Label2" type="Label" parent="Panel/VFlowContainer/Player2VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 text = "123"
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="Panel/VFlowContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="Panel/VFlowContainer/Player2VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/VFlowContainer/HBoxContainer4"]
+[node name="Label" type="Label" parent="Panel/VFlowContainer/Player2VBoxContainer/HBoxContainer4"]
 layout_mode = 2
 text = "Mana:"
 
-[node name="Label2" type="Label" parent="Panel/VFlowContainer/HBoxContainer4"]
+[node name="Label2" type="Label" parent="Panel/VFlowContainer/Player2VBoxContainer/HBoxContainer4"]
 layout_mode = 2
 text = "123"
 
-[node name="HBoxContainer6" type="HBoxContainer" parent="Panel/VFlowContainer"]
+[node name="HBoxContainer6" type="HBoxContainer" parent="Panel/VFlowContainer/Player2VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Panel/VFlowContainer/HBoxContainer6"]
+[node name="Label" type="Label" parent="Panel/VFlowContainer/Player2VBoxContainer/HBoxContainer6"]
 layout_mode = 2
 text = "Power Mana:"
 
-[node name="Label2" type="Label" parent="Panel/VFlowContainer/HBoxContainer6"]
+[node name="Label2" type="Label" parent="Panel/VFlowContainer/Player2VBoxContainer/HBoxContainer6"]
+layout_mode = 2
+text = "123"
+
+[node name="Player1VBoxContainer" type="VBoxContainer" parent="Panel/VFlowContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="Label" type="Label" parent="Panel/VFlowContainer/Player1VBoxContainer"]
+layout_mode = 2
+text = "Player1"
+
+[node name="TextureRect" type="TextureRect" parent="Panel/VFlowContainer/Player1VBoxContainer"]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+texture = ExtResource("4_46mmn")
+expand_mode = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VFlowContainer/Player1VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/VFlowContainer/Player1VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Hp:"
+
+[node name="Label2" type="Label" parent="Panel/VFlowContainer/Player1VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "123"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/VFlowContainer/Player1VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/VFlowContainer/Player1VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Mana:"
+
+[node name="Label2" type="Label" parent="Panel/VFlowContainer/Player1VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "123"
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="Panel/VFlowContainer/Player1VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/VFlowContainer/Player1VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+text = "Power Mana:"
+
+[node name="Label2" type="Label" parent="Panel/VFlowContainer/Player1VBoxContainer/HBoxContainer5"]
 layout_mode = 2
 text = "123"
 
 [node name="table" parent="." instance=ExtResource("1_lyxhp")]
 transform = Transform3D(4.50436, 0, 0, 0, 0.045, 0, 0, 0, 3.28695, 0.861922, 0, 0.0129451)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="table"]
+transform = Transform3D(0.54799, 0, 0, 0, 1, 0, 0, 0, 0.515847, 0, 0.666459, 0)
+mesh = SubResource("PlaneMesh_vxmh1")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 4, 0)

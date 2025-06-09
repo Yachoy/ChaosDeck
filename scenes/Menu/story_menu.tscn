@@ -32,11 +32,6 @@ layout_mode = 2
 text = "Продолжить"
 alignment = 0
 
-[node name="choose_save_button" type="Button" parent="MainContainer/VFlowContainer2"]
-layout_mode = 2
-text = "Выбрать сохранение"
-alignment = 0
-
 [node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/VFlowContainer2"]
 layout_mode = 2
 size_flags_horizontal = 8
