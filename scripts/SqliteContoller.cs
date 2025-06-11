@@ -319,6 +319,42 @@ public partial class SqliteContoller : Node
         }
     }
 
+    /// <summary>
+    /// Gets a list of all saved deck names.
+    /// </summary>
+    /// <returns>A list of strings, where each string is a deck name. Returns an empty list if no decks are found or an error occurs.</returns>
+    public List<string> GetAllDeckNames()
+    {
+        var deckNames = new List<string>();
+        string query = $"SELECT {COL_DECK_UID} FROM {TABLE_CARD_DECKS};";
+
+        try
+        {
+            using (var connection = new SqliteConnection(_connectionString))
+            {
+                connection.Open();
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = query;
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            deckNames.Add(reader.GetString(0));
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            GD.PrintErr($"Error getting all deck names: {ex.Message}");
+            // Return empty list in case of error
+        }
+        return deckNames;
+    }
+
     // --- Test Operations (Commented Out by Default) ---
 
     public void TestDatabaseOperations()

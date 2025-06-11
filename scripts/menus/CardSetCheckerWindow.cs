@@ -1,3 +1,4 @@
+using CCSpace;
 using Godot;
 using System;
 using System.Collections.Generic;
@@ -5,12 +6,16 @@ using System.Net.Sockets;
 
 public partial class CardSetCheckerWindow : Window
 {
+    [Export]
     Button creator;
+    [Export]
     Button changer;
+    [Export]
     Button deleter;
+    [Export]
     Button backButton;
+    [Export]
     Button enterButton;
-    VBoxContainer cardSetList;
 
     [Export]
     ItemList list;
@@ -18,23 +23,12 @@ public partial class CardSetCheckerWindow : Window
     string selected_text;
     CardController cc;
 
-    // Called when the node enters the scene tree for the first time.
+    SqliteContoller sc;
+
+    public static readonly string DEFAULT_NAME_DECK = "NewDeck(unsaved)";
+
     public override void _Ready()
     {
-        creator = GetNode<Button>(new NodePath("VBoxContainer/HFlowContainer/new_cardSet_Button"));
-        creator.Pressed += () => EnterInCardSet(null);
-        changer = GetNode<Button>(new NodePath("VBoxContainer/HFlowContainer/change_cardSet_Button"));
-        changer.Pressed += Update;
-        deleter = GetNode<Button>(new NodePath("VBoxContainer/HFlowContainer/delete_cardSet_Button"));
-        deleter.Pressed += Update;
-        backButton = GetNode<Button>(new NodePath("VBoxContainer/HFlowContainer/exit_Button"));
-        backButton.Pressed += Update;
-        enterButton = GetNode<Button>(new NodePath("VBoxContainer/HFlowContainer/start_Button"));
-        enterButton.Pressed += Update;
-        cardSetList = GetNode<VBoxContainer>(new NodePath("VBoxContainer/VBoxContainer"));
-        //Поправить, когда будет сохранение наборов карт
-        //UploadCardSets(*СПИСОК СТРОК*);
-
 
         cc = GetNode<CardController>("/root/CardController");
         if (cc == null)
@@ -42,10 +36,59 @@ public partial class CardSetCheckerWindow : Window
             GD.PrintErr("CardController не загружен...");
         }
 
+        sc = GetNode<SqliteContoller>("/root/SqliteContoller");
+        if (sc == null)
+        {
+            GD.PrintErr("SqliteContoller не загружен... card_collection");
+        }
+
+        foreach (var i in sc.GetAllDeckNames())
+        {
+            list.AddItem(i);
+        }
+
         CloseRequested += Exit;
 
-//        list.ItemSelected += Selected;
-//        list.ItemActivated += Enter;
+        list.ItemSelected += Selected;
+        list.ItemActivated += Enter;
+        creator.Pressed += () => list.AddItem(DEFAULT_NAME_DECK);
+        changer.Pressed += EditDeck;
+        enterButton.Pressed += ChoiseDeck;
+    }
+
+
+    void ChoiseDeck()
+    {
+        if (selected_text == "" || !sc.DeckExists(selected_text))
+        {
+            GD.Print("Select deck to start, or this deck doesn't exists in bd");
+            return;
+        }
+        var sqliteData = sc.GetCardsInDeck(selected_text);
+        CardSetData csd = new CardSetData();
+        foreach (var sqlite_item in sqliteData)
+        {
+            foreach (var storage_item in cc.StorageCards.LoadedCards)
+            {
+                if (sqlite_item.Key == storage_item.DefaultName)
+                {
+                    csd.TryAdd(storage_item);
+                }
+                else
+                {
+                    GD.Print("Its may be problem with generating deck from bd... ");
+                }
+            }
+        }
+        cc.SetDefaultDeck(csd);
+        GetTree().ChangeSceneToFile("res://scenes/game_scene.tscn");
+    }
+
+    void EditDeck()
+    {
+        int idx = list.GetSelectedItems()[0];
+        cc.nameDeckToEdit = list.GetItemText(idx);
+        GetTree().ChangeSceneToFile("res://scenes/SetsCard/card_colection.tscn");
     }
 
     void Selected(long index) {
@@ -55,6 +98,8 @@ public partial class CardSetCheckerWindow : Window
     void Enter(long index)
     {
         GD.Print("Choice deck", list.GetItemText((int)index));
+        cc.nameDeckToEdit = list.GetItemText((int)index);
+        GetTree().ChangeSceneToFile("res://scenes/SetsCard/card_colection.tscn");
     }
 
     public void Exit()
@@ -70,13 +115,6 @@ public partial class CardSetCheckerWindow : Window
         GetTree().ChangeSceneToFile("res://scenes/SetsCard/card_colection.tscn");
     }
 
-    public void UploadCardSets(List<string> sets) {
-        foreach (string setName in sets) {
-            Label lb = new Label();
-            lb.Text = setName;
-            cardSetList.AddChild(lb);
-        }
-    }
     public void Quit() 
     {
         this.Hide();

@@ -1,11 +1,11 @@
 using Godot;
 using System;
 
-public partial class CardUI : Node2D
+public partial class CardUI : Control
 {
 
 	[Export] 
-	private Sprite2D target;
+	public TextureRect target;
 	[Export]
 	private float padding = 0.1f; // Процент отступа от каждой стороны (0.1 = 10%)
 
@@ -21,23 +21,39 @@ public partial class CardUI : Node2D
 	public Control Control;
 	public string description;
 
-	public override void _Ready(){
+	public string nameCard;
+
+	public event Action<CardUI, MouseButton> MouseRLClick;
+
+	public override void _Ready()
+	{
 		//ChangeTexture("res://resources/CardsStorage/images/dwarf.png");
+		target.GuiInput += Input;
 	}
 
 	public void ChangeTexture(string newTexturePath)
 	{
 		var newTexture = GD.Load<Texture2D>(newTexturePath);
+        ChangeTexture(newTexture);
+	}
 
-		if (newTexture != null)
+	public void Input(InputEvent @event)
+    {
+        // 1. Проверяем, является ли событие кликом мыши
+		if (@event is InputEventMouseButton mouseButtonEvent)
 		{
-			target.Texture = newTexture;
-            AdjustSpriteToTargetObject(); // Вызываем после смены текстуры
+
+			if (mouseButtonEvent.Pressed)
+			{
+				MouseRLClick?.Invoke(this, mouseButtonEvent.ButtonIndex);
+			}
 		}
-		else
-		{
-			GD.PrintErr($"Failed to load texture from path: {newTexturePath}");
-		}
+    }
+
+    public void ChangeTexture(Texture2D texture)
+	{
+		target.Texture = texture;
+        AdjustSpriteToTargetObject();
 	}
 
 	private void AdjustSpriteToTargetObject()

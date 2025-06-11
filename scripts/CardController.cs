@@ -392,7 +392,10 @@ public partial class CardController : Node
     private bool round_player1 = true;
 
     public CardSetData DebugCardSet = new CardSetData();
+    public CardSetData StoryDeck = new CardSetData();
     private CardSetData defaultDeck = null;
+
+    public string nameDeckToEdit = "";
 
     public CardLoader StorageCards = new CardLoader("res://resources/CardsStorage/", new System.Collections.Generic.Dictionary<string, ICardBehavior>{
             {"Archer", new BaseBegaviour()},
@@ -473,12 +476,12 @@ public partial class CardController : Node
             GD.Print("Default deck doesn't take");
             return false;
         }
-        if (deck1.CountTypesCards < 2)
+        if (deck1.CountTypesCards < 1)
         {
             GD.PushWarning("Count cards in deck1 less then 10, return false");
             return false;
         }
-        if (deck2.CountTypesCards < 2)
+        if (deck2.CountTypesCards < 1)
         {
             GD.PushWarning("Count cards in deck2 less then 10, return false");
             return false;

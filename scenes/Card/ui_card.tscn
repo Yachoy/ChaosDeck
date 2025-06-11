@@ -19,59 +19,75 @@ font_size = 18
 font_color = Color(0, 0, 0, 1)
 outline_size = 32
 
-[node name="UiCard" type="Node2D" node_paths=PackedStringArray("target", "mana", "type", "damage", "hp")]
-position = Vector2(233, 216)
-script = ExtResource("1_2thj7")
-target = NodePath("Sprite2D")
-mana = NodePath("ManaT")
-type = NodePath("TypeT")
-damage = NodePath("DamageT")
-hp = NodePath("HpT")
-
-[node name="Sprite2D2" type="Sprite2D" parent="."]
-scale = Vector2(1, 1.08)
-texture = SubResource("GradientTexture2D_umws0")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.3, 0.27)
-texture = ExtResource("1_yn1xp")
-
-[node name="TypeT" type="Label" parent="."]
-offset_left = -58.0
-offset_top = -63.0
-offset_right = -37.0
-offset_bottom = -37.0
-text = "23"
-label_settings = SubResource("LabelSettings_5pwi5")
-
-[node name="ManaT" type="Label" parent="."]
-offset_left = 38.0
-offset_top = -63.0
-offset_right = 59.0
-offset_bottom = -37.0
-text = "23"
-label_settings = SubResource("LabelSettings_5pwi5")
-
-[node name="HpT" type="Label" parent="."]
-offset_left = -58.0
-offset_top = 35.0
-offset_right = -37.0
-offset_bottom = 61.0
-text = "23"
-label_settings = SubResource("LabelSettings_5pwi5")
-
-[node name="DamageT" type="Label" parent="."]
-offset_left = 38.0
-offset_top = 35.0
-offset_right = 59.0
-offset_bottom = 61.0
-text = "23"
-label_settings = SubResource("LabelSettings_5pwi5")
-
-[node name="Control" type="Control" parent="."]
+[node name="UiCard" type="Control" node_paths=PackedStringArray("target", "mana", "type", "damage", "hp", "Control")]
 layout_mode = 3
 anchors_preset = 0
-offset_left = -57.0
-offset_top = -54.0
-offset_right = 57.0
-offset_bottom = 58.0
+script = ExtResource("1_2thj7")
+target = NodePath("Element/TextureRect")
+mana = NodePath("Element/ManaT")
+type = NodePath("Element/TypeT")
+damage = NodePath("Element/DamageT")
+hp = NodePath("Element/HpT")
+Control = NodePath("Element")
+
+[node name="Element" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 120.0
+offset_bottom = 125.0
+
+[node name="Sprite2D2" type="Sprite2D" parent="Element"]
+texture = SubResource("GradientTexture2D_umws0")
+centered = false
+
+[node name="Sprite2D" type="Sprite2D" parent="Element"]
+visible = false
+scale = Vector2(0.275, 0.255)
+texture = ExtResource("1_yn1xp")
+centered = false
+offset = Vector2(20, 20)
+
+[node name="TextureRect" type="TextureRect" parent="Element"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 10.0
+offset_bottom = 10.0
+mouse_filter = 0
+
+[node name="TypeT" type="Label" parent="Element"]
+layout_mode = 0
+offset_left = -7.0
+offset_top = -10.0
+offset_right = 14.0
+offset_bottom = 16.0
+text = "23"
+label_settings = SubResource("LabelSettings_5pwi5")
+
+[node name="ManaT" type="Label" parent="Element"]
+layout_mode = 0
+offset_left = 89.0
+offset_top = -10.0
+offset_right = 110.0
+offset_bottom = 16.0
+text = "23"
+label_settings = SubResource("LabelSettings_5pwi5")
+
+[node name="HpT" type="Label" parent="Element"]
+layout_mode = 0
+offset_left = -7.0
+offset_top = 88.0
+offset_right = 14.0
+offset_bottom = 114.0
+text = "23"
+label_settings = SubResource("LabelSettings_5pwi5")
+
+[node name="DamageT" type="Label" parent="Element"]
+layout_mode = 0
+offset_left = 89.0
+offset_top = 88.0
+offset_right = 110.0
+offset_bottom = 114.0
+text = "23"
+label_settings = SubResource("LabelSettings_5pwi5")

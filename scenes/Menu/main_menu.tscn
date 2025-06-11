@@ -36,11 +36,17 @@ transform = Transform3D(-4.99872e-08, 0, 1, 0, 0.0456752, 0, -1.14357, 0, -4.371
 cast_shadow = 0
 mesh = ExtResource("3_who34")
 
-[node name="CardSetChecker_Window" type="Window" parent="."]
+[node name="CardSetChecker_Window" type="Window" parent="." node_paths=PackedStringArray("creator", "changer", "deleter", "backButton", "enterButton", "list")]
 initial_position = 1
 size = Vector2i(400, 450)
 keep_title_visible = true
 script = ExtResource("4_b4fo2")
+creator = NodePath("VBoxContainer/HFlowContainer/new_cardSet_Button")
+changer = NodePath("VBoxContainer/HFlowContainer/change_cardSet_Button")
+deleter = NodePath("VBoxContainer/HFlowContainer/delete_cardSet_Button")
+backButton = NodePath("VBoxContainer/HFlowContainer/exit_Button")
+enterButton = NodePath("VBoxContainer/HFlowContainer/start_Button")
+list = NodePath("VBoxContainer/VBoxContainer/ItemList")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CardSetChecker_Window"]
 anchors_preset = 15
@@ -58,6 +64,7 @@ layout_mode = 2
 [node name="ItemList" type="ItemList" parent="CardSetChecker_Window/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 auto_height = true
+item_count = 1
 
 [node name="HFlowContainer" type="HFlowContainer" parent="CardSetChecker_Window/VBoxContainer"]
 layout_mode = 2

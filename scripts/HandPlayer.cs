@@ -75,7 +75,7 @@ public partial class HandPlayer : Node3D
             cc.RegisterButtonEndRound(btnEndround);
 			cc.RegisterMenuParameters((ParamatersTwoPlayers)panelPTP);
 		}
-		cc.StartNewMatch(cc.DebugCardSet, cc.DebugCardSet);
+		cc.StartNewMatch();
 	}
 
 	public void SpawnStartPlaces(int _numberOfPlaces = MAX_PLACES)

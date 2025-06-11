@@ -13,35 +13,28 @@ public partial class settings : Node
 	[Export]
 	Control uiRoot;
 	public static bool fs;
-	// Called when the node enters the scene tree for the first time.
+	UIController uic;
+	
 	public override void _Ready()
 	{
 		back.Pressed += Back_Pressed;
-        fullScreen.Toggled += FullScreen_Toggled;
+		fullScreen.Toggled += FullScreen_Toggled;
 		Theme theme = Themes.CreateMenuButtonTheme();
 		uiRoot.Theme = theme;
-    }
+
+		uic = GetNode<UIController>("/root/UiController");
+		if (uic == null)
+		{
+			GD.PrintErr("UiController не загружен...");
+		}
+	}
 
     private void FullScreen_Toggled(bool toggledOn)
     {
-		
-		if (toggledOn)
-		{
-			DisplayServer.WindowSetMode(DisplayServer.WindowMode.Fullscreen);
-		}
-		else 
-		{
-			DisplayServer.WindowSetMode(DisplayServer.WindowMode.Windowed);
-		}
-        main_menu.Save("res://resources/storage/settings.json", "Fullscreen", main_menu.fullscr);
+		uic.SetFullscreen(toggledOn);
     }
 
     public void Back_Pressed() {
         GetTree().ChangeSceneToFile("res://scenes/Menu/main_menu.tscn");
     }
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
 }
